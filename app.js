@@ -1908,17 +1908,15 @@ class IELTSappState {
     const btn = document.getElementById("chat-mic-btn");
     const inputEl = document.getElementById("chat-user-input");
 
+    // Security warning: Web Speech API requires HTTPS on mobile/external network
+    if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      alert("⚠️ Thiết bị di động (như iPhone) bắt buộc phải dùng kết nối bảo mật HTTPS mới có thể sử dụng Microphone. Trình duyệt sẽ khóa ghi âm nếu chạy qua HTTP thường.");
+    }
+
     if (speechEngine.isRecording) {
       speechEngine.stopListening();
       if (btn) btn.classList.remove("recording");
       if (inputEl) inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
-      
-      // Automatically send the message if there's text after stopping
-      setTimeout(() => {
-        if (inputEl && inputEl.value.trim()) {
-          this.sendChatMessage();
-        }
-      }, 350);
     } else {
       if (btn) btn.classList.add("recording");
       if (inputEl) {
@@ -1932,7 +1930,7 @@ class IELTSappState {
       // Stop text to speech if speaking so user can speak
       speechEngine.stopSpeaking();
 
-      // Listen continuously so the user can speak naturally and stop when done by clicking mic again
+      // Listen continuously. Works on iOS Safari (which auto-stops after silence) and Chrome
       speechEngine.startListening(
         (resultText) => {
           if (inputEl) {
@@ -1942,12 +1940,21 @@ class IELTSappState {
         },
         (errorMsg) => {
           console.error("Chat Speech Error:", errorMsg);
+          alert("Lỗi Microphone: " + errorMsg + "\nVui lòng cấp quyền Micro hoặc kiểm tra kết nối HTTPS.");
           if (btn) btn.classList.remove("recording");
           if (inputEl) inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
         },
         () => {
           if (btn) btn.classList.remove("recording");
-          if (inputEl) inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
+          if (inputEl) {
+            inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
+            // Automatically send the message if there's text (covers both manual stop and iOS Safari auto-cutoff)
+            setTimeout(() => {
+              if (inputEl.value.trim()) {
+                this.sendChatMessage();
+              }
+            }, 300);
+          }
         },
         true // continuous = true
       );

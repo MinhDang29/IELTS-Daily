@@ -1947,5 +1947,48 @@ body.light-theme .nav-item button:hover {
     padding: 0.75rem 1rem !important;
     font-size: 0.9rem !important;
   }
+
+  /* Prevent stacked cards from sticking together on mobile */
+  .writing-layout > .glass-panel,
+  .reading-layout > .glass-panel {
+    margin-bottom: 1.25rem !important;
+  }
+
+  /* Adaptive layouts for squashed elements */
+  .audio-player-widget {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  .audio-progress-container {
+    width: 100%;
+  }
+  .accent-select {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Chat elements alignment on narrow screens */
+  .chat-input-bar {
+    padding: 0.75rem 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+  .chat-text-input {
+    padding: 0.6rem 0.75rem !important;
+  }
+  .chat-mic-btn {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Micro rating adjustments on tiny mobile devices */
+  @media (max-width: 400px) {
+    .rating-btn {
+      font-size: 0.65rem !important;
+      padding: 0.4rem 0.15rem !important;
+    }
+  }
 }
 
