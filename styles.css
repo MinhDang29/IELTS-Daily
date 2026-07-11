@@ -1470,6 +1470,30 @@ body {
   flex-grow: 1;
 }
 
+.chat-mic-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
+  color: var(--text-bright);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.chat-mic-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--color-primary);
+}
+.chat-mic-btn.recording {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: var(--text-bright);
+  animation: pulse 1.5s infinite;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }

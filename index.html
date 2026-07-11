@@ -269,10 +269,14 @@
                 <span class="pulse-green-dot"></span> Đang trực tuyến
               </div>
             </div>
-            <div style="margin-left: auto;">
-              <label style="font-size: 0.8rem; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 0.25rem;">
-                <input type="checkbox" id="chat-voice-output" checked> Phát giọng nói tự động
+            <div style="margin-left: auto; display: flex; align-items: center; gap: 0.75rem;">
+              <label style="font-size: 0.8rem; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                <input type="checkbox" id="chat-voice-output" checked> Phát giọng nói
               </label>
+              <select id="chat-voice-lang" class="accent-select" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                <option value="en-US">Nói Tiếng Anh (EN)</option>
+                <option value="vi-VN">Nói Tiếng Việt (VI)</option>
+              </select>
             </div>
           </div>
 
@@ -293,7 +297,10 @@
 
           <!-- Input Controls -->
           <div class="chat-input-bar">
-            <input type="text" class="form-input chat-text-input" id="chat-user-input" placeholder="Nhập câu hỏi của bạn tại đây (Ví dụ: Làm sao nâng band speaking?, Bạn có mẹo xin việc nào không?)..." onkeydown="if(event.key === 'Enter') app.sendChatMessage();">
+            <input type="text" class="form-input chat-text-input" id="chat-user-input" placeholder="Nhập câu hỏi hoặc nhấn mic để nói..." onkeydown="if(event.key === 'Enter') app.sendChatMessage();">
+            <button class="chat-mic-btn" id="chat-mic-btn" onclick="app.toggleChatSpeech()" title="Nói câu hỏi của bạn">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1v11m0 0a3 3 0 01-3-3V4a3 3 0 016 0v5a3 3 0 01-3 3zm0 0v5m0 0a6 6 0 01-6-6M12 17a6 6 0 006-6"/></svg>
+            </button>
             <button class="btn btn-primary" onclick="app.sendChatMessage()">Gửi đi</button>
           </div>
         </div>

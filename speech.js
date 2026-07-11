@@ -30,7 +30,10 @@ class IELTSspeechEngine {
     
     // Choose voice based on accent preference
     let selectedVoice = null;
-    if (accent === 'UK') {
+    if (accent === 'VI') {
+      selectedVoice = voices.find(v => v.lang.includes('vi-VN') && v.name.includes('Google'));
+      if (!selectedVoice) selectedVoice = voices.find(v => v.lang.includes('vi-VN'));
+    } else if (accent === 'UK') {
       selectedVoice = voices.find(v => v.lang.includes('en-GB') && v.name.includes('Google'));
       if (!selectedVoice) selectedVoice = voices.find(v => v.lang.includes('en-GB'));
     } else { // default US
@@ -41,7 +44,9 @@ class IELTSspeechEngine {
     if (selectedVoice) {
       utterance.voice = selectedVoice;
     }
-    utterance.rate = 0.9; // Slightly slower for learning purposes
+    
+    // If speaking Vietnamese, standard rate is fine, English might be slightly slower
+    utterance.rate = accent === 'VI' ? 1.0 : 0.9;
 
     if (onStart) utterance.onstart = onStart;
     if (onEnd) utterance.onend = onEnd;
@@ -55,8 +60,14 @@ class IELTSspeechEngine {
     }
   }
 
+  setLanguage(lang) {
+    if (this.recognition) {
+      this.recognition.lang = lang;
+    }
+  }
+
   // Start speech recognition
-  startListening(onResult, onError, onEnd) {
+  startListening(onResult, onError, onEnd, continuous = true) {
     if (!this.recognition) {
       onError("Speech recognition is not supported in this browser. Please use Google Chrome or Microsoft Edge.");
       return;
@@ -65,6 +76,7 @@ class IELTSspeechEngine {
     if (this.isRecording) return;
 
     this.isRecording = true;
+    this.recognition.continuous = continuous;
     this.recognition.onresult = (event) => {
       let finalTranscript = '';
       for (let i = event.resultIndex; i < event.results.length; ++i) {

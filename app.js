@@ -1859,10 +1859,58 @@ class IELTSappState {
       // Auto speak aloud if checked
       const voiceCheck = document.getElementById("chat-voice-output");
       if (voiceCheck && voiceCheck.checked) {
-        // Speak in US accent
-        speechEngine.speak(reply.replace(/<[^>]*>/g, ""), "US");
+        // Use Vietnamese accent if the reply contains Vietnamese characters and Vietnamese is selected, otherwise English
+        const hasVietnamese = /[\u00C0-\u1EF9]/i.test(reply);
+        const lang = document.getElementById("chat-voice-lang")?.value || "en-US";
+        const accent = (hasVietnamese && lang.startsWith("vi")) ? "VI" : "US";
+        speechEngine.speak(reply.replace(/<[^>]*>/g, ""), accent);
       }
     }, 1500);
+  }
+
+  toggleChatSpeech() {
+    const btn = document.getElementById("chat-mic-btn");
+    const inputEl = document.getElementById("chat-user-input");
+
+    if (speechEngine.isRecording) {
+      speechEngine.stopListening();
+      if (btn) btn.classList.remove("recording");
+      if (inputEl) inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
+    } else {
+      if (btn) btn.classList.add("recording");
+      if (inputEl) {
+        inputEl.value = "";
+        inputEl.placeholder = "Đang lắng nghe... Hãy nói!";
+      }
+      
+      const lang = document.getElementById("chat-voice-lang")?.value || "en-US";
+      speechEngine.setLanguage(lang);
+      
+      // Stop text to speech if speaking so user can speak
+      speechEngine.stopSpeaking();
+
+      // Listen sentence-by-sentence (continuous = false) for quick walkie-talkie chat
+      speechEngine.startListening(
+        (resultText) => {
+          if (inputEl) {
+            inputEl.value = resultText;
+            inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
+          }
+          // Automatically send the message
+          this.sendChatMessage();
+        },
+        (errorMsg) => {
+          console.error("Chat Speech Error:", errorMsg);
+          if (btn) btn.classList.remove("recording");
+          if (inputEl) inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
+        },
+        () => {
+          if (btn) btn.classList.remove("recording");
+          if (inputEl) inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
+        },
+        false // continuous = false
+      );
+    }
   }
 
   appendChatMsg(text, align, runTypewriter = false) {
