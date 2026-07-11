@@ -18,7 +18,43 @@ class IELTSappState {
     this.currentPhone = "";
     this.chatHistory = [];
     
+    this.initTheme();
     this.init();
+  }
+
+  initTheme() {
+    const savedTheme = localStorage.getItem("ielts_theme");
+    const body = document.body;
+    const darkIcon = document.querySelector("#theme-toggle-btn .theme-icon-dark");
+    const lightIcon = document.querySelector("#theme-toggle-btn .theme-icon-light");
+    
+    if (savedTheme === "light") {
+      body.classList.add("light-theme");
+      if (darkIcon) darkIcon.style.display = "none";
+      if (lightIcon) lightIcon.style.display = "block";
+    } else {
+      body.classList.remove("light-theme");
+      if (darkIcon) darkIcon.style.display = "block";
+      if (lightIcon) lightIcon.style.display = "none";
+    }
+  }
+
+  toggleTheme() {
+    const body = document.body;
+    const darkIcon = document.querySelector("#theme-toggle-btn .theme-icon-dark");
+    const lightIcon = document.querySelector("#theme-toggle-btn .theme-icon-light");
+    
+    if (body.classList.contains("light-theme")) {
+      body.classList.remove("light-theme");
+      if (darkIcon) darkIcon.style.display = "block";
+      if (lightIcon) lightIcon.style.display = "none";
+      localStorage.setItem("ielts_theme", "dark");
+    } else {
+      body.classList.add("light-theme");
+      if (darkIcon) darkIcon.style.display = "none";
+      if (lightIcon) lightIcon.style.display = "block";
+      localStorage.setItem("ielts_theme", "light");
+    }
   }
 
   init() {
@@ -1876,6 +1912,13 @@ class IELTSappState {
       speechEngine.stopListening();
       if (btn) btn.classList.remove("recording");
       if (inputEl) inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
+      
+      // Automatically send the message if there's text after stopping
+      setTimeout(() => {
+        if (inputEl && inputEl.value.trim()) {
+          this.sendChatMessage();
+        }
+      }, 350);
     } else {
       if (btn) btn.classList.add("recording");
       if (inputEl) {
@@ -1889,15 +1932,13 @@ class IELTSappState {
       // Stop text to speech if speaking so user can speak
       speechEngine.stopSpeaking();
 
-      // Listen sentence-by-sentence (continuous = false) for quick walkie-talkie chat
+      // Listen continuously so the user can speak naturally and stop when done by clicking mic again
       speechEngine.startListening(
         (resultText) => {
           if (inputEl) {
             inputEl.value = resultText;
-            inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
+            inputEl.placeholder = "Đang nghe: " + resultText;
           }
-          // Automatically send the message
-          this.sendChatMessage();
         },
         (errorMsg) => {
           console.error("Chat Speech Error:", errorMsg);
@@ -1908,7 +1949,7 @@ class IELTSappState {
           if (btn) btn.classList.remove("recording");
           if (inputEl) inputEl.placeholder = "Nhập câu hỏi hoặc nhấn mic để nói...";
         },
-        false // continuous = false
+        true // continuous = true
       );
     }
   }
