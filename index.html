@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IELTS Daily - Học IELTS Mỗi Ngày Từ TOEIC 500</title>
+  
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Chart.js for premium analytics radar plots -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="logo-container">
+        <div class="logo-icon">I</div>
+        <span class="logo-text">IELTS Daily</span>
+      </div>
+
+      <nav class="nav-menu">
+        <li class="nav-item active">
+          <button onclick="app.switchPage('dashboard')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            Bảng Điều Khiển
+          </button>
+        </li>
+        <li class="nav-item">
+          <button onclick="app.switchPage('roadmap')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Lộ Trình Học
+          </button>
+        </li>
+        <li class="nav-item">
+          <button onclick="app.switchPage('vocabulary-box')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Hộp Từ Vựng
+          </button>
+        </li>
+        <li class="nav-item">
+          <button onclick="app.switchPage('analytics')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2zm9-1v-4a2 2 0 00-2-2h-2a2 2 0 00-2 2v4a2 2 0 002 2h2a2 2 0 002-2z"/></svg>
+            Báo Cáo Tiến Trình
+          </button>
+        </li>
+        <li class="nav-item">
+          <button onclick="app.switchPage('mock-test')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Thi Thử IELTS
+          </button>
+        </li>
+        <li class="nav-item">
+          <button onclick="app.switchPage('ai-assistant')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+            Trợ Lý Ảo Chat
+          </button>
+        </li>
+      </nav>
+
+      <!-- User Profile widget inside sidebar -->
+      <div class="user-profile-widget">
+        <div class="user-avatar" id="avatar-letter">U</div>
+        <div class="user-details">
+          <span class="user-name" id="profile-widget-name">Học Viên</span>
+          <span class="user-streak" id="profile-widget-streak">0 ngày học</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="main-content">
+      
+      <!-- Floating Header Tools -->
+      <div style="display:flex; justify-content:flex-end; margin-bottom: 1.5rem; gap: 0.5rem; position: relative;">
+        <!-- Float Help Button -->
+        <button class="help-float-btn" onclick="app.toggleHelpGuideModal(true)" title="Xem Hướng Dẫn Lộ Trình Hàng Ngày">
+          ?
+        </button>
+      </div>
+
+      <!-- 1. DASHBOARD PAGE -->
+      <section id="dashboard" class="page-section active">
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h2>Chào, <span id="dash-welcome-name">Học Viên</span>!</h2>
+            <p>Hôm nay bạn cần dành 1-2 tiếng học bài mới và ôn tập từ vựng để tránh bị quên nhé. Chúc bạn một ngày học tập năng suất!</p>
+          </div>
+          <button class="banner-action-btn" onclick="app.switchPage('roadmap')">Học tiếp bài mới</button>
+        </div>
+
+        <!-- Remediation warning box -->
+        <div class="remediation-box" id="dash-remediation-container" style="display: none;"></div>
+
+        <!-- Metric widgets grid -->
+        <div class="grid-3" style="margin-bottom: 2rem">
+          <div class="glass-panel stat-card" style="background: rgba(99, 102, 241, 0.08); border-color: rgba(99,102,241,0.2)">
+            <div class="stat-icon" style="background: var(--color-primary)"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+            <div class="stat-info">
+              <span class="stat-value" id="dash-streak-val">1 ngày</span>
+              <span class="stat-label">Chuỗi ngày học liên tục</span>
+            </div>
+          </div>
+          <div class="glass-panel stat-card" style="background: rgba(245, 158, 11, 0.08); border-color: rgba(245,158,11,0.2)">
+            <div class="stat-icon" style="background: var(--color-warning)"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
+            <div class="stat-info">
+              <span class="stat-value" id="dash-vocab-val">0 từ</span>
+              <span class="stat-label">Từ vựng đến hạn ôn tập</span>
+            </div>
+          </div>
+          <div class="glass-panel stat-card" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16,185,129,0.2)">
+            <div class="stat-icon" style="background: var(--color-success)"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div class="stat-info">
+              <span class="stat-value" id="dash-band-val">Band 4.0</span>
+              <span class="stat-label">Điểm trung bình ước lượng</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Study guidance -->
+          <div class="glass-panel">
+            <h3 class="section-title" style="font-size: 1.35rem; margin-bottom: 1rem">Định Hướng Học Tập Hôm Nay</h3>
+            <p id="dash-guidance-text" style="color: var(--text-main); font-size: 0.95rem; line-height: 1.6;">Đang tải định hướng học tập...</p>
+          </div>
+          <!-- Recent activity log -->
+          <div class="glass-panel">
+            <h3 class="section-title" style="font-size: 1.35rem; margin-bottom: 1rem">Hoạt Động Gần Đây</h3>
+            <ul id="dash-history-list" style="list-style: none;"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. LEARNING ROADMAP PAGE -->
+      <section id="roadmap" class="page-section">
+        <div class="section-header">
+          <h2 class="section-title">Lộ Trình Học IELTS 5.0 - 6.0</h2>
+          <span class="section-subtitle">Hoàn thành lần lượt từng Unit tích hợp cả 4 kỹ năng và vượt qua bài thi đánh giá.</span>
+        </div>
+        <div class="roadmap-timeline" id="roadmap-list"></div>
+      </section>
+
+      <!-- 3. VOCABULARY BOX PAGE -->
+      <section id="vocabulary-box" class="page-section">
+        <div class="section-header">
+          <h2 class="section-title">Hộp Từ Vựng Chống Quên (Spaced Repetition)</h2>
+          <span class="section-subtitle">Danh sách từ vựng được tự động sắp xếp ôn tập theo thuật toán dựa trên mức độ ghi nhớ của bạn.</span>
+        </div>
+        <div id="vocab-box-list"></div>
+      </section>
+
+      <!-- 4. ANALYTICS PAGE -->
+      <section id="analytics" class="page-section">
+        <div class="section-header">
+          <h2 class="section-title">Báo Cáo Năng Lực & Kỹ Năng</h2>
+          <span class="section-subtitle">Biểu đồ thể hiện năng lực tổng quát dựa trên kết quả các bài thực hành và kiểm tra.</span>
+        </div>
+        <div class="grid-2">
+          <div class="glass-panel" style="display:flex; justify-content:center; align-items:center; min-height:350px">
+            <canvas id="analytics-chart-canvas"></canvas>
+          </div>
+          <div class="glass-panel">
+            <h3 class="section-title" style="font-size:1.35rem; margin-bottom: 1rem">Đánh giá chung: <span id="avg-score-badge" style="color:var(--color-secondary)">Band 4.5</span></h3>
+            <p id="analytics-advice" style="line-height:1.6; color:var(--text-main)"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. MOCK TEST PAGE -->
+      <section id="mock-test" class="page-section">
+        <div class="section-header">
+          <h2 class="section-title">Thi Thử IELTS Mock Test</h2>
+          <span class="section-subtitle">Đánh giá kết quả cuối cùng để xem bạn đã đạt trình độ IELTS 5.0 - 6.0 hay chưa.</span>
+        </div>
+        <div id="mock-test-body"></div>
+      </section>
+
+      <!-- 6. MOCK TEST WORKSPACE -->
+      <section id="mock-test-workspace" class="page-section">
+        <div class="section-header">
+          <h2 class="section-title">Kỳ Thi Thử IELTS Chuẩn Hóa</h2>
+          <span class="section-subtitle">Hãy tập trung hoàn thành tốt nhất cả 3 phần thi để đối soát điểm band thực tế.</span>
+        </div>
+
+        <div class="glass-panel">
+          <h4 style="font-family:var(--font-heading); margin-bottom: 1rem">Phần 1: IELTS Listening</h4>
+          <div id="mock-listening-panel"></div>
+        </div>
+
+        <div class="glass-panel">
+          <h4 style="font-family:var(--font-heading); margin-bottom: 1rem">Phần 2: IELTS Reading</h4>
+          <div id="mock-reading-panel"></div>
+        </div>
+
+        <div class="glass-panel">
+          <h4 style="font-family:var(--font-heading); margin-bottom: 1rem">Phần 3: IELTS Writing Task 2</h4>
+          <div id="mock-writing-panel"></div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; margin-bottom: 2rem">
+          <button class="btn btn-success" onclick="app.submitMockTest()">Nộp Bài Thi Thử (Submit Exam)</button>
+        </div>
+      </section>
+
+      <!-- 7. UNIT PRACTICE WORKSPACE -->
+      <section id="unit-practice" class="page-section">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem">
+          <div>
+            <h2 class="section-title" id="practice-unit-title">Unit 1: Food & Nutrition</h2>
+            <span class="section-subtitle" id="practice-unit-vi">Ẩm thực & Dinh dưỡng</span>
+          </div>
+          <div>
+            <button class="btn btn-secondary" onclick="app.switchPage('roadmap')">← Trở lại Lộ trình</button>
+            <button class="btn btn-success" id="start-unit-test-btn" style="display:none;" onclick="app.startUnitTest()">Bắt đầu thi thử Unit →</button>
+          </div>
+        </div>
+
+        <!-- Skill Workspace Tabs navigation -->
+        <nav class="tabs-navigation">
+          <button class="tab-btn active" onclick="app.switchTab('vocabulary')">Từ vựng (Vocab)</button>
+          <button class="tab-btn" onclick="app.switchTab('grammar')">Ngữ pháp (Grammar)</button>
+          <button class="tab-btn" onclick="app.switchTab('reading')">Đọc (Reading)</button>
+          <button class="tab-btn" onclick="app.switchTab('listening')">Nghe (Listening)</button>
+          <button class="tab-btn" onclick="app.switchTab('speaking')">Nói (Speaking)</button>
+          <button class="tab-btn" onclick="app.switchTab('writing')">Viết (Writing)</button>
+        </nav>
+
+        <!-- Skill tab containers -->
+        <div class="skill-tab-content active" id="tab-vocabulary">
+          <div class="vocab-box-container" id="flashcard-container"></div>
+        </div>
+
+        <div class="skill-tab-content" id="tab-grammar"></div>
+        <div class="skill-tab-content" id="tab-reading"></div>
+        <div class="skill-tab-content" id="tab-listening"></div>
+        <div class="skill-tab-content" id="tab-speaking"></div>
+        <div class="skill-tab-content" id="tab-writing"></div>
+      </section>
+
+      <!-- 8. UNIT TEST ASSESSMENT -->
+      <section id="unit-test" class="page-section">
+        <div class="section-header">
+          <h2 class="section-title" id="test-unit-title">Bài Kiểm Tra Đánh Giá Unit</h2>
+          <span class="section-subtitle">Đạt trên 60% để hoàn thành Unit và mở khóa bài học kế tiếp.</span>
+        </div>
+        <div class="glass-panel">
+          <div id="test-questions-area"></div>
+          <div style="display:flex; justify-content:flex-end">
+            <button class="btn btn-primary" onclick="app.submitUnitTest()">Nộp Bài Đánh Giá</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. AI ASSISTANT CHAT PAGE -->
+      <section id="ai-assistant" class="page-section">
+        <div class="section-header">
+          <h2 class="section-title">Trợ Lý Ảo Mentor (IELTS & Life)</h2>
+          <span class="section-subtitle">Giao tiếp trực tuyến như người thật về Công việc, Học hành và Đời sống.</span>
+        </div>
+
+        <div class="glass-panel chat-container">
+          <!-- Chat Head -->
+          <div class="chat-header">
+            <div class="chat-avatar-circle">AI</div>
+            <div class="chat-user-info">
+              <strong>IELTS & Life Mentor</strong>
+              <div class="chat-online-badge">
+                <span class="pulse-green-dot"></span> Đang trực tuyến
+              </div>
+            </div>
+            <div style="margin-left: auto;">
+              <label style="font-size: 0.8rem; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 0.25rem;">
+                <input type="checkbox" id="chat-voice-output" checked> Phát giọng nói tự động
+              </label>
+            </div>
+          </div>
+
+          <!-- Messages Stream -->
+          <div class="chat-messages-stream" id="chat-messages-box">
+            <div class="chat-msg chat-msg-left">
+              <div class="chat-bubble">
+                Xin chào! Tôi là Trợ lý ảo IELTS & Đời sống của bạn. Bạn muốn nói chuyện hay cần tôi tư vấn về chủ đề nào hôm nay? (Học hành, Công việc hay Đời sống?)
+              </div>
+              <div class="chat-time">Vừa xong</div>
+            </div>
+          </div>
+
+          <!-- Typing Indicator -->
+          <div class="chat-typing-indicator" id="chat-indicator" style="display: none;">
+            <span></span><span></span><span></span>
+          </div>
+
+          <!-- Input Controls -->
+          <div class="chat-input-bar">
+            <input type="text" class="form-input chat-text-input" id="chat-user-input" placeholder="Nhập câu hỏi của bạn tại đây (Ví dụ: Làm sao nâng band speaking?, Bạn có mẹo xin việc nào không?)..." onkeydown="if(event.key === 'Enter') app.sendChatMessage();">
+            <button class="btn btn-primary" onclick="app.sendChatMessage()">Gửi đi</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- HELP & SCHEDULE GUIDE MODAL -->
+  <div class="modal-overlay" id="help-guide-modal">
+    <div class="modal-content" style="max-width: 600px;">
+      <h3 class="modal-title">Lộ Trình Học Hàng Ngày (60 - 90 Phút)</h3>
+      <div class="modal-body" style="font-size: 0.9rem; line-height: 1.6;">
+        <p style="margin-bottom:1rem; font-weight: 500; color: var(--color-primary);">Vui lòng tuân thủ lộ trình 5 bước sau đây mỗi ngày để đảm bảo việc học đạt kết quả tốt nhất:</p>
+        <div style="display:flex; flex-direction:column; gap:0.85rem">
+          <div style="background: rgba(255,255,255,0.02); border:1px solid var(--border-glass); padding:0.75rem; border-radius:10px">
+            <strong>Bước 1: Ôn tập từ vựng cũ chống quên (10-15 phút)</strong>
+            <p style="color:var(--text-muted); font-size:0.8rem">Vào tab "Hộp Từ Vựng" để ôn lại các thẻ nhớ từ đến hạn theo thuật toán Spaced Repetition.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border:1px solid var(--border-glass); padding:0.75rem; border-radius:10px">
+            <strong>Bước 2: Học bài mới của Unit - Vocab & Grammar (20 phút)</strong>
+            <p style="color:var(--text-muted); font-size:0.8rem">Vào "Lộ Trình Học", chọn bài học để xem lý thuyết từ mới và làm quiz trắc nghiệm ngữ pháp.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border:1px solid var(--border-glass); padding:0.75rem; border-radius:10px">
+            <strong>Bước 3: Luyện Đọc & Nghe hiểu (25-30 phút)</strong>
+            <p style="color:var(--text-muted); font-size:0.8rem">Đọc bài luận (có nút dịch tiếng Việt) và nghe audio đàm thoại (giọng UK/US) để làm bài trắc nghiệm.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border:1px solid var(--border-glass); padding:0.75rem; border-radius:10px">
+            <strong>Bước 4: Thực hành Nói & Viết IELTS (25-30 phút)</strong>
+            <p style="color:var(--text-muted); font-size:0.8rem">Speaking Part 1, 2, 3 qua mic chấm điểm trực tiếp. Writing Task 1, 2 đếm từ tích hợp checklist từ gợi ý.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border:1px solid var(--border-glass); padding:0.75rem; border-radius:10px">
+            <strong>Bước 5: Vượt qua bài kiểm tra đánh giá Unit (10 phút)</strong>
+            <p style="color:var(--text-muted); font-size:0.8rem">Hoàn thành bài thi đạt >= 60% để mở bài học mới. Nếu trượt, bạn phải ôn lại từ vựng cũ theo hướng dẫn.</p>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem">
+        <button class="btn btn-secondary" onclick="app.toggleHelpGuideModal(false)">Đóng lại</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTHENTICATION & DIAGNOSTIC MODAL (Step 1: Phone Login / Step 2: Diagnostic) -->
+  <div class="modal-overlay active" id="auth-modal">
+    <!-- Step 1: Login Form -->
+    <div class="modal-content" id="auth-login-step">
+      <h3 class="modal-title" style="text-align: center;">Đăng Nhập IELTS Daily</h3>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 1.5rem; text-align: center;">
+        Nhập số điện thoại đăng ký và mật khẩu truy cập hệ thống của bạn.
+      </p>
+
+      <form onsubmit="event.preventDefault(); app.handleLoginSubmit();">
+        <div class="form-group">
+          <label for="login-phone">Số điện thoại (SĐT):</label>
+          <input type="text" id="login-phone" class="form-input" placeholder="Ví dụ: 0357422081..." required>
+        </div>
+        <div class="form-group">
+          <label for="login-pass">Mật khẩu bảo mật:</label>
+          <input type="password" id="login-pass" class="form-input" placeholder="Nhập mật khẩu..." required>
+        </div>
+        
+        <div id="login-error-msg" style="color: var(--color-danger); font-size: 0.85rem; margin-bottom: 1rem; display: none;"></div>
+        
+        <div style="display:flex; justify-content:stretch; margin-top:1.5rem">
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Đăng nhập</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Step 2: Registration & Diagnostic (Appears only for new users) -->
+    <div class="modal-content" id="auth-diagnostic-step" style="max-width: 650px; max-height: 90vh; overflow-y: auto; display: none;">
+      <h3 class="modal-title">Đăng ký Hồ sơ & Đánh giá ban đầu</h3>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom: 1.5rem">
+        Số điện thoại của bạn chưa có hồ sơ học tập. Vui lòng nhập họ tên của bạn và hoàn thành bài kiểm tra nhanh 5 câu dưới đây để tạo lộ trình phù hợp.
+      </p>
+
+      <div class="form-group">
+        <label for="register-name">Họ và Tên của bạn:</label>
+        <input type="text" id="register-name" class="form-input" placeholder="Ví dụ: Đăng Nguyễn" required>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-glass); padding-top:1.5rem; margin-top:1.5rem">
+        <h4 style="font-family:var(--font-heading); margin-bottom:1rem">Bài kiểm tra năng lực cơ bản (Diagnostic Quiz)</h4>
+        <div id="diagnostic-questions"></div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.5rem">
+        <button class="btn btn-primary" onclick="app.submitDiagnostic()">Hoàn tất & Bắt đầu học</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Scripts -->
+  <script src="data.js"></script>
+  <script src="speech.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
