@@ -1587,7 +1587,8 @@ body {
     padding: 0 0.5rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start !important;
+    gap: 0.25rem;
     align-items: center;
     z-index: 150;
     overflow-x: auto;
@@ -1602,7 +1603,8 @@ body {
     flex: 1 0 auto;
     display: flex;
     justify-content: center;
-    max-width: 80px;
+    min-width: 65px;
+    max-width: 85px;
   }
   .nav-item button {
     flex-direction: column;
@@ -1981,6 +1983,12 @@ body.light-theme .nav-item button:hover {
     width: 40px !important;
     height: 40px !important;
     border-radius: 10px !important;
+  }
+
+  /* Modal responsive sizing */
+  .modal-content {
+    width: 92% !important;
+    margin: 0 auto;
   }
 
   /* Micro rating adjustments on tiny mobile devices */
