@@ -2177,6 +2177,165 @@ const ieltsData = {
             ]
           }
         ]
+      },
+      {
+        id: 'tenses',
+        title: "Các Thì Trong Tiếng Anh (Tenses)",
+        description: "Chia động từ đúng thì dựa vào trạng từ chỉ thời gian và ngữ cảnh câu.",
+        questions: [
+          {
+            id: 11,
+            question: "I ________ (Present Simple vs Present Continuous) English right now, but I usually ________ (study) math at this time.",
+            options: ["am studying / study", "study / am studying", "study / study", "am studying / am studying"],
+            answer: "am studying / study",
+            explanation: "Hành động đang diễn ra dùng thì Hiện tại tiếp diễn (am studying), thói quen dùng thì Hiện tại đơn (study).",
+            vocabInSentence: [
+              { word: "Usually", meaning: "Thường xuyên", pos: "adv" }
+            ]
+          },
+          {
+            id: 12,
+            question: "She ________ (Present Perfect) three books so far this year.",
+            options: ["has read", "read", "reads", "is reading"],
+            answer: "has read",
+            explanation: "Với từ nhận biết 'so far', ta dùng thì Hiện tại hoàn thành để diễn tả hành động từ quá khứ kéo dài đến hiện tại.",
+            vocabInSentence: [
+              { word: "So far", meaning: "Cho đến nay", pos: "adv" }
+            ]
+          },
+          {
+            id: 13,
+            question: "They ________ (Past Simple) a new hospital in our town last year.",
+            options: ["built", "have built", "build", "were building"],
+            answer: "built",
+            explanation: "Trạng từ 'last year' là dấu hiệu của thì Quá khứ đơn.",
+            vocabInSentence: [
+              { word: "Hospital", meaning: "Bệnh viện", pos: "noun" }
+            ]
+          },
+          {
+            id: 14,
+            question: "While I ________ (Past Continuous), the phone rang.",
+            options: ["was reading", "read", "am reading", "have read"],
+            answer: "was reading",
+            explanation: "Hành động đang diễn ra trong quá khứ bị cắt ngang, hành động đang diễn ra dùng thì Quá khứ tiếp diễn.",
+            vocabInSentence: [
+              { word: "While", meaning: "Trong khi", pos: "conj" }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'passive_voice',
+        title: "Câu Bị Động (Passive Voice)",
+        description: "Nhận biết và chuyển đổi giữa câu chủ động và bị động trong các thì khác nhau.",
+        questions: [
+          {
+            id: 15,
+            question: "The new bridge ________ by the construction team next month.",
+            options: ["will be completed", "will complete", "completes", "is completed"],
+            answer: "will be completed",
+            explanation: "Chủ ngữ chỉ vật ('The new bridge') nên cần dùng thể bị động tương lai: will be + V3.",
+            vocabInSentence: [
+              { word: "Bridge", meaning: "Cây cầu", pos: "noun" },
+              { word: "Construction team", meaning: "Đội thi công", pos: "noun phrase" }
+            ]
+          },
+          {
+            id: 16,
+            question: "My car ________ right now at the mechanic.",
+            options: ["is being repaired", "is repaired", "repairs", "has been repaired"],
+            answer: "is being repaired",
+            explanation: "Hành động đang diễn ra ở hiện tại bị động: is/are/am + being + V3.",
+            vocabInSentence: [
+              { word: "Mechanic", meaning: "Thợ cơ khí", pos: "noun" }
+            ]
+          },
+          {
+            id: 17,
+            question: "The report ________ before the meeting started.",
+            options: ["had been finished", "has been finished", "was finished", "finished"],
+            answer: "had been finished",
+            explanation: "Hành động hoàn thành trước một hành động khác trong quá khứ, bị động: had been + V3.",
+            vocabInSentence: [
+              { word: "Report", meaning: "Báo cáo", pos: "noun" }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'comparatives',
+        title: "So Sánh Hơn & Nhất (Comparatives & Superlatives)",
+        description: "Luyện cấu trúc so sánh hơn (-er/more), so sánh nhất (-est/most) và so sánh bằng (as...as).",
+        questions: [
+          {
+            id: 18,
+            question: "This test is ________ than the one we took last week.",
+            options: ["more difficult", "most difficult", "difficult", "as difficult"],
+            answer: "more difficult",
+            explanation: "Có 'than' nên dùng so sánh hơn, tính từ dài 'difficult' dùng 'more + adj'.",
+            vocabInSentence: [
+              { word: "Difficult", meaning: "Khó", pos: "adj" }
+            ]
+          },
+          {
+            id: 19,
+            question: "He is the ________ student in the class.",
+            options: ["smartest", "smarter", "most smart", "smart"],
+            answer: "smartest",
+            explanation: "Có 'the' và phạm vi 'in the class' nên dùng so sánh nhất.",
+            vocabInSentence: [
+              { word: "Smart", meaning: "Thông minh", pos: "adj" }
+            ]
+          },
+          {
+            id: 20,
+            question: "My house is not as ________ as yours.",
+            options: ["big", "bigger", "biggest", "more big"],
+            answer: "big",
+            explanation: "Cấu trúc so sánh bằng (as...as) dùng tính từ nguyên mẫu.",
+            vocabInSentence: [
+              { word: "Big", meaning: "To lớn", pos: "adj" }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'articles_preps',
+        title: "Mạo Từ & Giới Từ (Articles & Prepositions)",
+        description: "Phân biệt a/an/the/zero article và chọn giới từ phù hợp (in/on/at/for/by/with).",
+        questions: [
+          {
+            id: 21,
+            question: "I always read a book ________ the morning.",
+            options: ["in", "on", "at", "for"],
+            answer: "in",
+            explanation: "Giới từ đi với các buổi trong ngày (morning/afternoon/evening) là 'in'.",
+            vocabInSentence: [
+              { word: "Read", meaning: "Đọc", pos: "verb" }
+            ]
+          },
+          {
+            id: 22,
+            question: "She is ________ honest person.",
+            options: ["an", "a", "the", "zero article"],
+            answer: "an",
+            explanation: "Từ 'honest' bắt đầu bằng âm nguyên âm /ɒ/ nên dùng mạo từ 'an'.",
+            vocabInSentence: [
+              { word: "Honest", meaning: "Trung thực", pos: "adj" }
+            ]
+          },
+          {
+            id: 23,
+            question: "He traveled to Paris ________ train.",
+            options: ["by", "on", "in", "with"],
+            answer: "by",
+            explanation: "Di chuyển bằng phương tiện giao thông nói chung dùng giới từ 'by'.",
+            vocabInSentence: [
+              { word: "Travel", meaning: "Du lịch, di chuyển", pos: "verb" }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -2209,6 +2368,123 @@ const ieltsData = {
         ]
       }
     ]
-  }
+  },
+  readingPracticeData: [
+    {
+      id: 1,
+      title: "The Benefits of Regular Exercise",
+      titleVi: "Lợi ích của tập thể dục đều đặn",
+      level: "Band 5.0",
+      sentences: [
+        {
+          text: "Regular physical activity is essential for maintaining good health and preventing chronic diseases.",
+          words: [
+            { w: "Regular", vi: "Đều đặn, thường xuyên", ipa: "/ˈreɡjʊlər/" },
+            { w: "physical", vi: "Thuộc về thể chất", ipa: "/ˈfɪzɪkəl/" },
+            { w: "activity", vi: "Hoạt động", ipa: "/ækˈtɪvɪti/" },
+            { w: "essential", vi: "Thiết yếu, cần thiết", ipa: "/ɪˈsenʃəl/" },
+            { w: "maintaining", vi: "Duy trì", ipa: "/meɪnˈteɪnɪŋ/" },
+            { w: "health", vi: "Sức khỏe", ipa: "/helθ/" },
+            { w: "preventing", vi: "Ngăn ngừa", ipa: "/prɪˈventɪŋ/" },
+            { w: "chronic", vi: "Mãn tính", ipa: "/ˈkrɒnɪk/" },
+            { w: "diseases", vi: "Bệnh tật", ipa: "/dɪˈziːzɪz/" }
+          ]
+        },
+        {
+          text: "Exercise improves cardiovascular function, strengthens muscles, and boosts mental well-being.",
+          words: [
+            { w: "Exercise", vi: "Tập thể dục", ipa: "/ˈeksərsaɪz/" },
+            { w: "improves", vi: "Cải thiện", ipa: "/ɪmˈpruːvz/" },
+            { w: "cardiovascular", vi: "Thuộc tim mạch", ipa: "/ˌkɑːdioʊˈvæskjʊlər/" },
+            { w: "function", vi: "Chức năng", ipa: "/ˈfʌŋkʃən/" },
+            { w: "strengthens", vi: "Tăng cường", ipa: "/ˈstreŋθənz/" },
+            { w: "muscles", vi: "Cơ bắp", ipa: "/ˈmʌsəlz/" },
+            { w: "boosts", vi: "Thúc đẩy, nâng cao", ipa: "/buːsts/" },
+            { w: "mental", vi: "Tinh thần", ipa: "/ˈmentəl/" },
+            { w: "well-being", vi: "Sự khỏe mạnh", ipa: "/ˌwelˈbiːɪŋ/" }
+          ]
+        },
+        {
+          text: "Experts recommend at least thirty minutes of moderate exercise five times per week.",
+          words: [
+            { w: "Experts", vi: "Chuyên gia", ipa: "/ˈekspɜːrts/" },
+            { w: "recommend", vi: "Khuyến nghị", ipa: "/ˌrekəˈmend/" },
+            { w: "moderate", vi: "Vừa phải", ipa: "/ˈmɒdərət/" },
+            { w: "exercise", vi: "Bài tập, thể dục", ipa: "/ˈeksərsaɪz/" }
+          ]
+        },
+        {
+          text: "Walking, swimming, and cycling are popular forms of aerobic activity that suit all age groups.",
+          words: [
+            { w: "Walking", vi: "Đi bộ", ipa: "/ˈwɔːkɪŋ/" },
+            { w: "swimming", vi: "Bơi lội", ipa: "/ˈswɪmɪŋ/" },
+            { w: "cycling", vi: "Đạp xe", ipa: "/ˈsaɪklɪŋ/" },
+            { w: "popular", vi: "Phổ biến", ipa: "/ˈpɒpjʊlər/" },
+            { w: "aerobic", vi: "Thuộc hiếu khí", ipa: "/eəˈroʊbɪk/" },
+            { w: "suit", vi: "Phù hợp", ipa: "/suːt/" }
+          ]
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Technology in Education",
+      titleVi: "Công nghệ trong giáo dục",
+      level: "Band 5.5",
+      sentences: [
+        {
+          text: "Technology has revolutionized the way students access information and interact with learning materials.",
+          words: [
+            { w: "Technology", vi: "Công nghệ", ipa: "/tekˈnɒlədʒi/" },
+            { w: "revolutionized", vi: "Cách mạng hóa", ipa: "/ˌrevəˈluːʃənaɪzd/" },
+            { w: "access", vi: "Truy cập", ipa: "/ˈækses/" },
+            { w: "information", vi: "Thông tin", ipa: "/ˌɪnfərˈmeɪʃən/" },
+            { w: "interact", vi: "Tương tác", ipa: "/ˌɪntərˈækt/" },
+            { w: "materials", vi: "Tài liệu", ipa: "/məˈtɪəriəlz/" }
+          ]
+        },
+        {
+          text: "Online platforms enable students to study at their own pace from any location worldwide.",
+          words: [
+            { w: "Online", vi: "Trực tuyến", ipa: "/ˌɒnˈlaɪn/" },
+            { w: "platforms", vi: "Nền tảng", ipa: "/ˈplætfɔːrmz/" },
+            { w: "enable", vi: "Cho phép", ipa: "/ɪˈneɪbəl/" },
+            { w: "pace", vi: "Tốc độ, nhịp độ", ipa: "/peɪs/" },
+            { w: "location", vi: "Địa điểm", ipa: "/loʊˈkeɪʃən/" },
+            { w: "worldwide", vi: "Toàn cầu", ipa: "/ˌwɜːrldˈwaɪd/" }
+          ]
+        },
+        {
+          text: "However, excessive screen time can negatively affect concentration and social skills among young learners.",
+          words: [
+            { w: "However", vi: "Tuy nhiên", ipa: "/haʊˈevər/" },
+            { w: "excessive", vi: "Quá mức", ipa: "/ɪkˈsesɪv/" },
+            { w: "screen", vi: "Màn hình", ipa: "/skriːn/" },
+            { w: "negatively", vi: "Tiêu cực", ipa: "/ˈneɡətɪvli/" },
+            { w: "affect", vi: "Ảnh hưởng", ipa: "/əˈfekt/" },
+            { w: "concentration", vi: "Sự tập trung", ipa: "/ˌkɒnsənˈtreɪʃən/" },
+            { w: "social skills", vi: "Kỹ năng xã hội", ipa: "/ˈsoʊʃəl skɪlz/" }
+          ]
+        }
+      ]
+    }
+  ],
+  pronunciationDrills: [
+    { id: 1, word: "Environment", ipa: "/ɪnˈvaɪrənmənt/", vi: "Môi trường", level: 1 },
+    { id: 2, word: "Technology", ipa: "/tekˈnɒlədʒi/", vi: "Công nghệ", level: 1 },
+    { id: 3, word: "Communication", ipa: "/kəˌmjuːnɪˈkeɪʃən/", vi: "Giao tiếp", level: 1 },
+    { id: 4, word: "Sustainable", ipa: "/səˈsteɪnəbəl/", vi: "Bền vững", level: 2 },
+    { id: 5, word: "Infrastructure", ipa: "/ˈɪnfrəstrʌktʃər/", vi: "Cơ sở hạ tầng", level: 2 },
+    { id: 6, word: "Cardiovascular", ipa: "/ˌkɑːdioʊˈvæskjʊlər/", vi: "Tim mạch", level: 2 },
+    { id: 7, word: "Urbanization", ipa: "/ˌɜːbənaɪˈzeɪʃən/", vi: "Đô thị hóa", level: 2 },
+    { id: 8, word: "Aesthetic", ipa: "/esˈθetɪk/", vi: "Thẩm mỹ", level: 1 },
+    { id: 9, word: "Sedentary", ipa: "/ˈsedəntəri/", vi: "Ngồi nhiều, thụ động", level: 2 },
+    { id: 10, word: "Entrepreneur", ipa: "/ˌɒntrəprəˈnɜːr/", vi: "Doanh nhân", level: 3 },
+    { id: 11, word: "Phenomenon", ipa: "/fɪˈnɒmɪnən/", vi: "Hiện tượng", level: 3 },
+    { id: 12, word: "Consequently", ipa: "/ˈkɒnsɪkwəntli/", vi: "Do đó, hệ quả là", level: 2 },
+    { id: 13, word: "Preservation", ipa: "/ˌprezərˈveɪʃən/", vi: "Sự bảo tồn", level: 2 },
+    { id: 14, word: "Approximately", ipa: "/əˈprɒksɪmətli/", vi: "Xấp xỉ, khoảng", level: 3 },
+    { id: 15, word: "Deteriorate", ipa: "/dɪˈtɪəriəreɪt/", vi: "Xấu đi, xuống cấp", level: 3 }
+  ]
 };
 

@@ -520,8 +520,252 @@ class IELTSappState {
       this.renderLearnedVocabBank();
     } else if (subtabId === "grammar-roadmap") {
       this.renderGrammarRoadmap();
+    } else if (subtabId === "interactive-reading") {
+      this.renderInteractiveReading();
+    } else if (subtabId === "pronunciation") {
+      this.renderPronunciationDrill();
     }
   }
+
+  // --- Sub-tab 4: Interactive Reading (KippyAI-style) ---
+  renderInteractiveReading() {
+    const container = document.getElementById("interactive-reading-container");
+    if (!container || !ieltsData.readingPracticeData) return;
+    container.innerHTML = "";
+
+    const headerPanel = document.createElement("div");
+    headerPanel.className = "glass-panel";
+    headerPanel.style.marginBottom = "1.5rem";
+    headerPanel.innerHTML = `
+      <h3 class="section-title" style="font-size:1.35rem; margin-bottom:0.5rem;">📖 Đọc Tương Tác - Bấm Từ Xem Nghĩa & Nghe Phát Âm</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem;">Bấm vào <strong>bất kỳ từ nào</strong> trong đoạn văn để xem nghĩa tiếng Việt + phiên âm IPA + nghe phát âm. Bấm 🔊 để nghe toàn bộ câu.</p>
+    `;
+    container.appendChild(headerPanel);
+
+    ieltsData.readingPracticeData.forEach(passage => {
+      const card = document.createElement("div");
+      card.className = "ir-passage-card";
+      
+      let badgeColor = passage.level === "Band 5.0" ? "var(--color-success)" : "var(--color-warning)";
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <div>
+            <h4>${passage.title}</h4>
+            <span style="font-size:0.85rem; color:var(--text-muted)">${passage.titleVi}</span>
+          </div>
+          <span style="background:rgba(99,102,241,0.1); color:${badgeColor}; padding:0.25rem 0.6rem; border-radius:8px; font-size:0.78rem; font-weight:600; border:1px solid rgba(99,102,241,0.2)">${passage.level}</span>
+        </div>
+        <div class="ir-sentences-area" id="ir-passage-${passage.id}"></div>
+      `;
+      container.appendChild(card);
+      
+      const sentencesArea = document.getElementById(`ir-passage-${passage.id}`);
+      
+      passage.sentences.forEach((sentence, sIdx) => {
+        const row = document.createElement("div");
+        row.className = "ir-sentence-row";
+        
+        const allTextWords = sentence.text.split(/\s+/);
+        
+        allTextWords.forEach(rawWord => {
+          const cleanWord = rawWord.replace(/[.,!?;:'"()]/g, "");
+          const punctuation = rawWord.replace(cleanWord, "");
+          
+          const wordData = sentence.words.find(w => w.w.toLowerCase() === cleanWord.toLowerCase());
+          
+          const wordSpan = document.createElement("span");
+          wordSpan.className = "ir-word";
+          wordSpan.textContent = rawWord;
+          
+          if (wordData) {
+            wordSpan.setAttribute("data-vi", wordData.vi);
+            wordSpan.setAttribute("data-ipa", wordData.ipa);
+            wordSpan.setAttribute("data-speak", cleanWord);
+            
+            wordSpan.addEventListener("click", (e) => {
+              e.stopPropagation();
+              // Remove all other active tooltips
+              document.querySelectorAll(".ir-word-tooltip").forEach(t => t.remove());
+              document.querySelectorAll(".ir-word.active-word").forEach(w => w.classList.remove("active-word"));
+              
+              wordSpan.classList.add("active-word");
+              
+              const tooltip = document.createElement("div");
+              tooltip.className = "ir-word-tooltip";
+              tooltip.innerHTML = `
+                <span class="ir-tooltip-vi">${wordData.vi}</span>
+                <span class="ir-tooltip-ipa">${wordData.ipa}</span>
+              `;
+              wordSpan.appendChild(tooltip);
+              
+              // Speak the word
+              speechEngine.speak(cleanWord, "US");
+              
+              // Auto remove tooltip after 3s
+              setTimeout(() => {
+                tooltip.remove();
+                wordSpan.classList.remove("active-word");
+              }, 3000);
+            });
+          }
+          
+          row.appendChild(wordSpan);
+        });
+        
+        // Listen to full sentence button
+        const listenBtn = document.createElement("button");
+        listenBtn.className = "ir-listen-sentence-btn";
+        listenBtn.innerHTML = `🔊 Nghe câu`;
+        listenBtn.addEventListener("click", () => {
+          speechEngine.speak(sentence.text, "US");
+        });
+        row.appendChild(listenBtn);
+        
+        sentencesArea.appendChild(row);
+      });
+    });
+
+    // Close tooltips when clicking outside
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".ir-word-tooltip").forEach(t => t.remove());
+      document.querySelectorAll(".ir-word.active-word").forEach(w => w.classList.remove("active-word"));
+    }, { once: true });
+  }
+
+  // --- Sub-tab 5: Pronunciation Drill ---
+  renderPronunciationDrill() {
+    const container = document.getElementById("pronunciation-container");
+    if (!container || !ieltsData.pronunciationDrills) return;
+    container.innerHTML = "";
+
+    const headerPanel = document.createElement("div");
+    headerPanel.className = "glass-panel";
+    headerPanel.style.marginBottom = "1.5rem";
+    headerPanel.innerHTML = `
+      <h3 class="section-title" style="font-size:1.35rem; margin-bottom:0.5rem;">🎤 Luyện Phát Âm Từ Vựng IELTS</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem;">Bấm <strong>🔊</strong> để nghe mẫu phát âm chuẩn. Sau đó bấm <strong>🎙</strong> để ghi âm giọng của bạn. Hệ thống sẽ so sánh và chấm điểm ngay lập tức.</p>
+    `;
+    container.appendChild(headerPanel);
+
+    // Group by level
+    const levels = [
+      { num: 1, label: "Cơ bản (Easy)", color: "var(--color-success)" },
+      { num: 2, label: "Trung bình (Medium)", color: "var(--color-warning)" },
+      { num: 3, label: "Nâng cao (Hard)", color: "var(--color-danger)" }
+    ];
+
+    levels.forEach(lv => {
+      const words = ieltsData.pronunciationDrills.filter(d => d.level === lv.num);
+      if (words.length === 0) return;
+
+      const sectionDiv = document.createElement("div");
+      sectionDiv.style.marginBottom = "1.5rem";
+      sectionDiv.innerHTML = `
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+          <span style="width:10px; height:10px; border-radius:50%; background:${lv.color}; display:inline-block;"></span>
+          <strong style="font-size:1rem; color:var(--text-bright);">${lv.label}</strong>
+          <span style="font-size:0.8rem; color:var(--text-muted);">(${words.length} từ)</span>
+        </div>
+      `;
+
+      words.forEach(drill => {
+        const card = document.createElement("div");
+        card.className = "pron-card";
+        card.id = `pron-card-${drill.id}`;
+        card.innerHTML = `
+          <div class="pron-word-section">
+            <span class="pron-word-main">${drill.word}</span>
+            <span class="pron-ipa">${drill.ipa}</span>
+            <span class="pron-vi">${drill.vi}</span>
+            <div class="pron-transcript" id="pron-transcript-${drill.id}"></div>
+          </div>
+          <div class="pron-controls">
+            <div id="pron-result-${drill.id}"></div>
+            <button class="pron-listen-btn" onclick="speechEngine.speak('${drill.word}', 'US')" title="Nghe mẫu phát âm chuẩn">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75V5.25L7.75 9.5H4.5v5h3.25L12 18.75z"/></svg>
+            </button>
+            <button class="pron-record-btn" id="pron-rec-${drill.id}" onclick="app.startPronunciationRecord(${drill.id}, '${drill.word}')" title="Ghi âm phát âm của bạn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+            </button>
+          </div>
+        `;
+        sectionDiv.appendChild(card);
+      });
+
+      container.appendChild(sectionDiv);
+    });
+  }
+
+  startPronunciationRecord(drillId, targetWord) {
+    const recBtn = document.getElementById(`pron-rec-${drillId}`);
+    const resultDiv = document.getElementById(`pron-result-${drillId}`);
+    const transcriptDiv = document.getElementById(`pron-transcript-${drillId}`);
+
+    if (speechEngine.isRecording) {
+      speechEngine.stopListening();
+      if (recBtn) recBtn.classList.remove("recording");
+      return;
+    }
+
+    if (recBtn) recBtn.classList.add("recording");
+    if (resultDiv) resultDiv.innerHTML = "";
+    if (transcriptDiv) transcriptDiv.innerText = "Đang nghe...";
+
+    speechEngine.startListening(
+      (transcript) => {
+        if (recBtn) recBtn.classList.remove("recording");
+        if (transcriptDiv) transcriptDiv.innerText = `Bạn nói: "${transcript}"`;
+
+        // Compare pronunciation
+        const target = targetWord.toLowerCase().trim();
+        const spoken = transcript.toLowerCase().trim();
+        
+        let resultClass = "";
+        let resultText = "";
+
+        if (spoken === target || spoken.includes(target) || target.includes(spoken)) {
+          resultClass = "correct";
+          resultText = "✓ Đúng!";
+        } else {
+          // Check partial match (at least 60% of characters match)
+          let matchChars = 0;
+          const shorter = Math.min(target.length, spoken.length);
+          for (let i = 0; i < shorter; i++) {
+            if (target[i] === spoken[i]) matchChars++;
+          }
+          const similarity = matchChars / target.length;
+          
+          if (similarity >= 0.6) {
+            resultClass = "partial";
+            resultText = "~ Gần đúng";
+          } else {
+            resultClass = "incorrect";
+            resultText = "✗ Sai";
+          }
+        }
+
+        if (resultDiv) {
+          resultDiv.innerHTML = `<span class="pron-result-badge ${resultClass}">${resultText}</span>`;
+        }
+
+        // Log to history
+        this.user.history.push({
+          date: new Date().toLocaleDateString('vi-VN'),
+          activity: `Luyện phát âm: "${targetWord}"`,
+          details: `Bạn nói: "${transcript}" → ${resultText}`
+        });
+        this.save();
+      },
+      (error) => {
+        if (recBtn) recBtn.classList.remove("recording");
+        if (transcriptDiv) transcriptDiv.innerText = `Lỗi: ${error}. Vui lòng dùng Chrome/Edge.`;
+      },
+      () => {
+        if (recBtn) recBtn.classList.remove("recording");
+      }
+    );
+  }
+
 
   toggleGrammarCheatsheetModal(show) {
     const modal = document.getElementById("grammar-cheatsheet-modal");

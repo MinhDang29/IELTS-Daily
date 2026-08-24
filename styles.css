@@ -2063,3 +2063,239 @@ body.light-theme .nav-item button:hover {
   }
 }
 
+/* Interactive Reading (KippyAI-style) */
+.ir-passage-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  cursor: default;
+}
+
+.ir-passage-card h4 {
+  font-family: var(--font-heading);
+  color: var(--text-bright);
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.ir-sentence-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+  align-items: baseline;
+  line-height: 2.2;
+}
+
+.ir-word {
+  position: relative;
+  cursor: pointer;
+  padding: 0.15rem 0.25rem;
+  border-radius: 6px;
+  font-size: 1.05rem;
+  color: var(--text-bright);
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.ir-word:hover {
+  background: rgba(99, 102, 241, 0.15);
+  border-bottom-color: var(--color-primary);
+}
+
+.ir-word.active-word {
+  background: rgba(99, 102, 241, 0.2);
+  border-bottom-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+.ir-word-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1f36;
+  border: 1px solid var(--color-primary);
+  border-radius: 12px;
+  padding: 0.6rem 0.85rem;
+  z-index: 200;
+  white-space: nowrap;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  animation: fadeIn 0.2s ease;
+  pointer-events: none;
+  min-width: 140px;
+  text-align: center;
+}
+
+body.light-theme .ir-word-tooltip {
+  background: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.ir-word-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-primary);
+}
+
+.ir-tooltip-vi {
+  font-size: 0.85rem;
+  color: var(--color-secondary);
+  font-weight: 600;
+  display: block;
+}
+
+.ir-tooltip-ipa {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.ir-listen-sentence-btn {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--color-primary);
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  vertical-align: middle;
+}
+
+.ir-listen-sentence-btn:hover {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+/* Pronunciation Practice */
+.pron-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  transition: var(--transition-smooth);
+}
+
+.pron-card:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.pron-word-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.pron-word-main {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--text-bright);
+  font-weight: 700;
+}
+
+.pron-ipa {
+  font-size: 0.9rem;
+  color: var(--color-primary);
+}
+
+.pron-vi {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.pron-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pron-listen-btn,
+.pron-record-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.pron-listen-btn {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--color-primary);
+}
+
+.pron-listen-btn:hover {
+  background: rgba(99, 102, 241, 0.3);
+}
+
+.pron-record-btn {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--color-danger);
+}
+
+.pron-record-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.pron-record-btn.recording {
+  background: var(--color-danger);
+  color: white;
+  animation: pulse 1s infinite;
+}
+
+.pron-result-badge {
+  padding: 0.3rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: center;
+}
+
+.pron-result-badge.correct {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--color-success);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.pron-result-badge.incorrect {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-danger);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.pron-result-badge.partial {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-warning);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.pron-transcript {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 0.25rem;
+}

@@ -162,9 +162,11 @@
 
         <!-- Sub-tabs Navigation inside Vocabulary Box -->
         <nav class="tabs-navigation" style="margin-bottom: 1.5rem;">
-          <button class="tab-btn active" id="vsub-btn-flashcards" onclick="app.switchVocabSubTab('flashcards')">🎴 Thẻ Từ Vựng Chống Quên</button>
-          <button class="tab-btn" id="vsub-btn-learned" onclick="app.switchVocabSubTab('learned')">📚 Từ Vựng Bài Tập Đã Làm</button>
-          <button class="tab-btn" id="vsub-btn-grammar-roadmap" onclick="app.switchVocabSubTab('grammar-roadmap')">🎓 Lộ Trình Ngữ Pháp & Mẹo Điền Từ</button>
+          <button class="tab-btn active" id="vsub-btn-flashcards" onclick="app.switchVocabSubTab('flashcards')">🎴 Thẻ Từ Vựng</button>
+          <button class="tab-btn" id="vsub-btn-learned" onclick="app.switchVocabSubTab('learned')">📚 Từ Đã Học</button>
+          <button class="tab-btn" id="vsub-btn-grammar-roadmap" onclick="app.switchVocabSubTab('grammar-roadmap')">🎓 Ngữ Pháp</button>
+          <button class="tab-btn" id="vsub-btn-interactive-reading" onclick="app.switchVocabSubTab('interactive-reading')">📖 Đọc Tương Tác</button>
+          <button class="tab-btn" id="vsub-btn-pronunciation" onclick="app.switchVocabSubTab('pronunciation')">🎤 Luyện Phát Âm</button>
         </nav>
 
         <!-- Sub-tab 1: Spaced Repetition Flashcards -->
@@ -180,6 +182,16 @@
         <!-- Sub-tab 3: Grammar & Gap-Fill Roadmap Trainer -->
         <div class="vocab-subtab-content" id="vsub-tab-grammar-roadmap" style="display:none;">
           <div id="grammar-roadmap-container"></div>
+        </div>
+
+        <!-- Sub-tab 4: Interactive Reading (KippyAI-style) -->
+        <div class="vocab-subtab-content" id="vsub-tab-interactive-reading" style="display:none;">
+          <div id="interactive-reading-container"></div>
+        </div>
+
+        <!-- Sub-tab 5: Pronunciation Practice -->
+        <div class="vocab-subtab-content" id="vsub-tab-pronunciation" style="display:none;">
+          <div id="pronunciation-container"></div>
         </div>
       </section>
 
