@@ -148,14 +148,41 @@
         <div class="roadmap-timeline" id="roadmap-list"></div>
       </section>
 
-      <!-- 3. VOCABULARY BOX PAGE -->
+      <!-- 3. VOCABULARY BOX PAGE (Enhanced with Grammar Roadmap & Exercise Vocab) -->
       <section id="vocabulary-box" class="page-section">
-        <div class="section-header">
-          <h2 class="section-title">Hộp Từ Vựng Chống Quên (Spaced Repetition)</h2>
-          <span class="section-subtitle">Danh sách từ vựng được tự động sắp xếp ôn tập theo thuật toán dựa trên mức độ ghi nhớ của bạn.</span>
+        <div class="section-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <h2 class="section-title">Hộp Từ Vựng & Lộ Trình Ngữ Pháp</h2>
+            <span class="section-subtitle">Ôn tập từ vựng SM-2 chống quên, tra cứu từ vựng từ bài tập đã làm, và luyện tập Mẹo điền từ Reading.</span>
+          </div>
+          <button class="btn btn-primary" onclick="app.toggleGrammarCheatsheetModal(true)" style="gap:0.4rem;">
+            💡 Mẹo Tra Cứu Ngữ Pháp
+          </button>
         </div>
-        <div id="vocab-box-list"></div>
+
+        <!-- Sub-tabs Navigation inside Vocabulary Box -->
+        <nav class="tabs-navigation" style="margin-bottom: 1.5rem;">
+          <button class="tab-btn active" id="vsub-btn-flashcards" onclick="app.switchVocabSubTab('flashcards')">🎴 Thẻ Từ Vựng Chống Quên</button>
+          <button class="tab-btn" id="vsub-btn-learned" onclick="app.switchVocabSubTab('learned')">📚 Từ Vựng Bài Tập Đã Làm</button>
+          <button class="tab-btn" id="vsub-btn-grammar-roadmap" onclick="app.switchVocabSubTab('grammar-roadmap')">🎓 Lộ Trình Ngữ Pháp & Mẹo Điền Từ</button>
+        </nav>
+
+        <!-- Sub-tab 1: Spaced Repetition Flashcards -->
+        <div class="vocab-subtab-content active" id="vsub-tab-flashcards">
+          <div id="vocab-box-list"></div>
+        </div>
+
+        <!-- Sub-tab 2: Learned Vocab Bank from completed exercises -->
+        <div class="vocab-subtab-content" id="vsub-tab-learned" style="display:none;">
+          <div id="learned-vocab-container"></div>
+        </div>
+
+        <!-- Sub-tab 3: Grammar & Gap-Fill Roadmap Trainer -->
+        <div class="vocab-subtab-content" id="vsub-tab-grammar-roadmap" style="display:none;">
+          <div id="grammar-roadmap-container"></div>
+        </div>
       </section>
+
 
       <!-- 4. ANALYTICS PAGE -->
       <section id="analytics" class="page-section">
@@ -350,6 +377,23 @@
       </div>
     </div>
   </div>
+
+  <!-- GRAMMAR CHEATSHEET MODAL -->
+  <div class="modal-overlay" id="grammar-cheatsheet-modal">
+    <div class="modal-content" style="max-width: 650px; max-height: 85vh; overflow-y: auto;">
+      <h3 class="modal-title" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>💡 Bảng Mẹo Tra Cứu Ngữ Pháp Reading</span>
+        <button class="btn btn-secondary" onclick="app.toggleGrammarCheatsheetModal(false)" style="padding:0.25rem 0.6rem; font-size:0.85rem;">✕ Đóng</button>
+      </h3>
+      <div class="modal-body" id="grammar-cheatsheet-body" style="font-size: 0.9rem; line-height: 1.6;">
+        <!-- Filled dynamically by app.js -->
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem">
+        <button class="btn btn-primary" onclick="app.toggleGrammarCheatsheetModal(false)">Tôi đã hiểu</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- AUTHENTICATION & DIAGNOSTIC MODAL (Step 1: Phone Login / Step 2: Diagnostic) -->
   <div class="modal-overlay active" id="auth-modal">

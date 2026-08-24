@@ -1973,6 +1973,69 @@ body.light-theme .nav-item button:hover {
 
   /* Chat elements alignment on narrow screens */
   .chat-input-bar {
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+}
+
+/* Vocabulary Sub-tabs & Grammar Roadmap Styles */
+.vocab-subtab-content {
+  animation: fadeIn 0.3s ease;
+}
+
+.grammar-cheatsheet-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.grammar-cheatsheet-section h4 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.cheatsheet-rule-item {
+  background: rgba(0, 0, 0, 0.15);
+  border-left: 3px solid var(--color-secondary);
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.88rem;
+}
+
+.cheatsheet-rule-item strong {
+  color: var(--text-bright);
+}
+
+.learned-vocab-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sentence-vocab-badge {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--color-primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-right: 0.35rem;
+  margin-top: 0.35rem;
+}
+
     padding: 0.75rem 0.5rem !important;
     gap: 0.5rem !important;
   }

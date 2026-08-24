@@ -2022,5 +2022,193 @@ const ieltsData = {
       part2: "Describe a book you have read recently that you found useful.\nYou should say:\n- What the book was\n- When you read it\n- What it was about\nAnd explain why you found this book useful.",
       part3: "Do you think digital books will completely replace paper books in schools in the future? Why?"
     }
+  },
+  grammarRoadmapData: {
+    title: "Lộ Trình Ngữ Pháp & Bài Tập Điền Từ Reading",
+    vietnameseTitle: "Huấn luyện chuyên sâu: Dạng Động từ, Mệnh đề & Từ vựng ngữ cảnh",
+    modules: [
+      {
+        id: "verb_forms",
+        title: "Dạng Động Từ (Verb Forms)",
+        description: "Phân biệt V-bare, to V, V-ing, V-ed và Will V dựa vào dấu hiệu đứng trước & sau chỗ trống.",
+        questions: [
+          {
+            id: 1,
+            question: "To improve air quality, city officials decided ________ (implement) stricter vehicle emission limits.",
+            options: ["implement", "to implement", "implementing", "implemented"],
+            answer: "to implement",
+            explanation: "Đứng sau động từ 'decided' (quá khứ của decide) ta dùng động từ nguyên mẫu có 'to' (to V).",
+            vocabInSentence: [
+              { word: "Improve", meaning: "Cải thiện, nâng cao", pos: "verb" },
+              { word: "Official", meaning: "Quan chức, giới chức", pos: "noun" },
+              { word: "Decide", meaning: "Quyết định", pos: "verb" },
+              { word: "Implement", meaning: "Thực thi, áp dụng", pos: "verb" },
+              { word: "Stricter", meaning: "Nghiêm ngặt hơn", pos: "adj" },
+              { word: "Vehicle emission", meaning: "Khí thải phương tiện", pos: "noun phrase" }
+            ]
+          },
+          {
+            id: 2,
+            question: "After ________ (complete) the survey, residents were offered a discount voucher for public transport.",
+            options: ["completed", "complete", "completing", "to complete"],
+            answer: "completing",
+            explanation: "Đứng sau giới từ 'After' bắt buộc dùng dạng Danh động từ (V-ing).",
+            vocabInSentence: [
+              { word: "Complete", meaning: "Hoàn thành", pos: "verb" },
+              { word: "Survey", meaning: "Bài khảo sát", pos: "noun" },
+              { word: "Resident", meaning: "Cư dân", pos: "noun" },
+              { word: "Offer", meaning: "Cung cấp, tặng", pos: "verb" },
+              { word: "Discount voucher", meaning: "Phiếu giảm giá", pos: "noun phrase" }
+            ]
+          },
+          {
+            id: 3,
+            question: "The historic monument ________ (restore) by international architects last month.",
+            options: ["was restored", "restoring", "to restore", "will restore"],
+            answer: "was restored",
+            explanation: "Câu ở thể Bị động quá khứ đơn (was/were + V-ed) vì 'monument' (di tích) chịu tác động của hành động trùng tu.",
+            vocabInSentence: [
+              { word: "Historic monument", meaning: "Di tích lịch sử", pos: "noun phrase" },
+              { word: "Restore", meaning: "Trùng tu, khôi phục", pos: "verb" },
+              { word: "Architect", meaning: "Kiến trúc sư", pos: "noun" }
+            ]
+          },
+          {
+            id: 4,
+            question: "Local companies must ________ (comply) with safety standards to prevent workplace accidents.",
+            options: ["complying", "to comply", "comply", "complied"],
+            answer: "comply",
+            explanation: "Đứng sau động từ khuyết thiếu 'must' bắt buộc dùng động từ nguyên mẫu không 'to' (V-bare).",
+            vocabInSentence: [
+              { word: "Must", meaning: "Bắt buộc phải", pos: "modal verb" },
+              { word: "Comply with", meaning: "Tuân thủ theo", pos: "verb phrase" },
+              { word: "Safety standards", meaning: "Tiêu chuẩn an toàn", pos: "noun phrase" },
+              { word: "Prevent", meaning: "Ngăn chặn", pos: "verb" },
+              { word: "Accident", meaning: "Tai nạn", pos: "noun" }
+            ]
+          },
+          {
+            id: 5,
+            question: "If the city council invests in green parks, urban well-being ________ (improve) rapidly.",
+            options: ["improved", "will improve", "improving", "to improve"],
+            answer: "will improve",
+            explanation: "Vế 'If' chia hiện tại đơn (invests), đây là câu điều kiện loại 1 nên vế chính dùng 'will + V'.",
+            vocabInSentence: [
+              { word: "Council", meaning: "Hội đồng", pos: "noun" },
+              { word: "Invest in", meaning: "Đầu tư vào", pos: "verb" },
+              { word: "Urban well-being", meaning: "Chất lượng sống đô thị", pos: "noun phrase" },
+              { word: "Improve", meaning: "Cải thiện", pos: "verb" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "clauses",
+        title: "Mệnh Đề (Clauses)",
+        description: "Rèn luyện Mệnh đề quan hệ (who/which/that/whose), Mệnh đề điều kiện và Mệnh đề bị động rút gọn.",
+        questions: [
+          {
+            id: 6,
+            question: "The scientist ________ (who) discovered the renewable material received an international prize.",
+            options: ["which", "who", "whose", "whom"],
+            answer: "who",
+            explanation: "Chủ ngữ phía trước là 'The scientist' (người) làm chủ ngữ cho vế sau nên dùng 'who'.",
+            vocabInSentence: [
+              { word: "Scientist", meaning: "Nhà khoa học", pos: "noun" },
+              { word: "Discover", meaning: "Phát hiện, phát minh", pos: "verb" },
+              { word: "Renewable material", meaning: "Vật liệu tái tạo", pos: "noun phrase" },
+              { word: "International prize", meaning: "Giải thưởng quốc tế", pos: "noun phrase" }
+            ]
+          },
+          {
+            id: 7,
+            question: "Artefacts ________ (found) during the subway excavation were placed in the national museum.",
+            options: ["found", "finding", "were found", "which found"],
+            answer: "found",
+            explanation: "Mệnh đề quan hệ rút gọn dạng bị động (viết tắt của 'which were found'). Mang nghĩa 'các cổ vật ĐƯỢC TÌM THẤY'.",
+            vocabInSentence: [
+              { word: "Artefact", meaning: "Cổ vật, hiện vật", pos: "noun" },
+              { word: "Excavation", meaning: "Sự khai quật", pos: "noun" },
+              { word: "Subway", meaning: "Tàu điện ngầm", pos: "noun" }
+            ]
+          },
+          {
+            id: 8,
+            question: "If households ________ (reduce) plastic consumption, marine ecosystems would recover.",
+            options: ["reduce", "reduced", "will reduce", "are reducing"],
+            answer: "reduced",
+            explanation: "Vế sau có 'would recover' ➔ Câu điều kiện loại 2 (giả định), vế 'If' chia thì quá khứ đơn (reduced).",
+            vocabInSentence: [
+              { word: "Household", meaning: "Hộ gia đình", pos: "noun" },
+              { word: "Plastic consumption", meaning: "Lượng tiêu thụ nhựa", pos: "noun phrase" },
+              { word: "Marine ecosystem", meaning: "Hệ sinh thái biển", pos: "noun phrase" },
+              { word: "Recover", meaning: "Phục hồi", pos: "verb" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "context_fill",
+        title: "Điền Từ Theo Ngữ Cảnh (Contextual Fill)",
+        description: "Luyện tập chọn từ vựng chuẩn xác dựa vào ý nghĩa và từ đi kèm (Collocations) trong câu.",
+        questions: [
+          {
+            id: 9,
+            question: "Office workers who sit for eight hours a day often lead a ________ (sedentary) lifestyle.",
+            options: ["nutritious", "sedentary", "virtual", "eco-friendly"],
+            answer: "sedentary",
+            explanation: "Sedentary nghĩa là 'thụ động, ngồi nhiều', phù hợp với ngữ cảnh nhân viên ngồi 8 tiếng.",
+            vocabInSentence: [
+              { word: "Sedentary", meaning: "Thụ động, ngồi nhiều", pos: "adj" },
+              { word: "Lifestyle", meaning: "Lối sống", pos: "noun" },
+              { word: "Office worker", meaning: "Nhân viên văn phòng", pos: "noun phrase" }
+            ]
+          },
+          {
+            id: 10,
+            question: "The museum exhibition has high ________ (aesthetic) value, attracting thousands of art lovers.",
+            options: ["aesthetic", "congestion", "suburb", "pension"],
+            answer: "aesthetic",
+            explanation: "Aesthetic value có nghĩa là 'giá trị thẩm mỹ', phù hợp với ngữ cảnh triển lãm nghệ thuật.",
+            vocabInSentence: [
+              { word: "Exhibition", meaning: "Cuộc triển lãm", pos: "noun" },
+              { word: "Aesthetic value", meaning: "Giá trị thẩm mỹ", pos: "noun phrase" },
+              { word: "Art lover", meaning: "Người yêu nghệ thuật", pos: "noun phrase" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  grammarCheatsheet: {
+    title: "Bảng Mẹo Tra Cứu Ngữ Pháp & Quy Tắc Điền Từ Reading",
+    sections: [
+      {
+        heading: "1. Quy tắc chia Dạng Động Từ (Verb Forms)",
+        rules: [
+          { label: "V-bare (Nguyên mẫu)", detail: "Sau động từ khuyết thiếu (can, could, will, would, must, should...) hoặc sau do/does/did." },
+          { label: "to V (Có 'to')", detail: "Chỉ mục đích (để làm gì) HOẶC sau: decide, plan, hope, want, agree, offer, prepare, expect, promise." },
+          { label: "V-ing (Danh động từ)", detail: "Sau giới từ (in, on, at, for, about, after, before...) HOẶC sau: enjoy, avoid, suggest, consider, practice, delay." },
+          { label: "V-ed / V3 (Bị động)", detail: "Sau động từ to be (is/are/was/were/been) HOẶC rút gọn mệnh đề bị động (Danh từ + V3 + by...)." },
+          { label: "Will V (Tương lai)", detail: "Có trạng từ tương lai (next year, tomorrow, soon) HOẶC vế chính câu điều kiện loại 1." }
+        ]
+      },
+      {
+        heading: "2. Quy tắc Mệnh Đề Quan Hệ (Relative Clauses)",
+        rules: [
+          { label: "Who", detail: "Thay thế cho Danh từ chỉ người, làm Chủ ngữ (e.g., The teacher WHO taught me...)." },
+          { label: "Which / That", detail: "Thay thế cho Danh từ chỉ vật/sự việc (e.g., The book WHICH I read...)." },
+          { label: "Rút gọn Bị động", detail: "Bỏ 'who/which is', chỉ giữ lại V-ed/V3 (e.g., Products MADE in Vietnam)." }
+        ]
+      },
+      {
+        heading: "3. Quy tắc Điền Từ Theo Ngữ Cảnh",
+        rules: [
+          { label: "Nhìn Từ Loại", detail: "Sau a/an/the cần Danh từ; Sau to be cần Tính từ; Sau Động từ cần Trạng từ." },
+          { label: "Ghép Collocation", detail: "Chú ý các cụm từ cố định (e.g., traffic congestion, balanced diet, aesthetic value)." }
+        ]
+      }
+    ]
   }
 };
+

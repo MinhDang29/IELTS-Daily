@@ -500,8 +500,72 @@ class IELTSappState {
     });
   }
 
+  // --- Vocabulary Box & Grammar Roadmap Sub-tabs logic ---
+  switchVocabSubTab(subtabId) {
+    this.activeVocabSubTab = subtabId;
+    
+    // Toggle active button
+    document.querySelectorAll("[id^='vsub-btn-']").forEach(btn => btn.classList.remove("active"));
+    const activeBtn = document.getElementById(`vsub-btn-${subtabId}`);
+    if (activeBtn) activeBtn.classList.add("active");
+
+    // Toggle active subtab content
+    document.querySelectorAll(".vocab-subtab-content").forEach(el => el.style.display = "none");
+    const activeTabEl = document.getElementById(`vsub-tab-${subtabId}`);
+    if (activeTabEl) activeTabEl.style.display = "block";
+
+    if (subtabId === "flashcards") {
+      this.renderFlashcards();
+    } else if (subtabId === "learned") {
+      this.renderLearnedVocabBank();
+    } else if (subtabId === "grammar-roadmap") {
+      this.renderGrammarRoadmap();
+    }
+  }
+
+  toggleGrammarCheatsheetModal(show) {
+    const modal = document.getElementById("grammar-cheatsheet-modal");
+    if (!modal) return;
+
+    if (show) {
+      modal.classList.add("active");
+      this.renderGrammarCheatsheetContent();
+    } else {
+      modal.classList.remove("active");
+    }
+  }
+
+  renderGrammarCheatsheetContent() {
+    const bodyEl = document.getElementById("grammar-cheatsheet-body");
+    if (!bodyEl) return;
+
+    const data = ieltsData.grammarCheatsheet;
+    let html = `<p style="margin-bottom:1.25rem; color:var(--text-muted)">Bảng tra cứu quy tắc nhận biết dạng từ & cấu trúc giúp bạn làm đúng bài tập điền từ Reading nhanh chóng:</p>`;
+
+    data.sections.forEach(sec => {
+      html += `
+        <div class="grammar-cheatsheet-section">
+          <h4>${sec.heading}</h4>
+          ${sec.rules.map(r => `
+            <div class="cheatsheet-rule-item">
+              <strong>• ${r.label}:</strong> ${r.detail}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    });
+
+    bodyEl.innerHTML = html;
+  }
+
   renderVocabBox() {
+    if (!this.activeVocabSubTab) this.activeVocabSubTab = "flashcards";
+    this.switchVocabSubTab(this.activeVocabSubTab);
+  }
+
+  renderFlashcards() {
     const listContainer = document.getElementById("vocab-box-list");
+    if (!listContainer) return;
     listContainer.innerHTML = "";
 
     const userVocab = this.user.vocabulary;
@@ -551,6 +615,150 @@ class IELTSappState {
       listContainer.appendChild(card);
     });
   }
+
+  // --- Sub-tab 2: Learned Vocab Bank from exercises ---
+  renderLearnedVocabBank() {
+    const container = document.getElementById("learned-vocab-container");
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (!this.user.learnedSentenceVocab) {
+      this.user.learnedSentenceVocab = [];
+    }
+
+    const learnedList = this.user.learnedSentenceVocab;
+
+    if (learnedList.length === 0) {
+      container.innerHTML = `
+        <div class="glass-panel" style="text-align:center; padding:2.5rem;">
+          <h4 style="color:var(--text-muted); margin-bottom:0.5rem;">Chưa có từ vựng bài tập được tích lũy</h4>
+          <p style="font-size:0.9rem; color:var(--text-muted)">Khi bạn thực hành các bài tập trong Lộ trình Ngữ pháp, từ vựng và giải thích trong câu sẽ tự động được thu thập vào đây để bạn tra cứu bất kỳ lúc nào!</p>
+          <button class="btn btn-primary" style="margin-top:1rem;" onclick="app.switchVocabSubTab('grammar-roadmap')">Làm Bài Tập Ngữ Pháp Ngay</button>
+        </div>
+      `;
+      return;
+    }
+
+    learnedList.forEach(v => {
+      const card = document.createElement("div");
+      card.className = "learned-vocab-card";
+      card.innerHTML = `
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <strong style="font-size:1.15rem; color:var(--text-bright);">${v.word}</strong>
+            <span style="font-size:0.8rem; color:var(--text-muted);">(${v.pos || 'vocab'})</span>
+          </div>
+          <div style="font-size:0.9rem; color:var(--color-primary); margin-top:0.2rem;">${v.meaning}</div>
+        </div>
+        <button class="audio-btn" onclick="speechEngine.speak('${v.word}')" title="Nghe phát âm">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75V5.25L7.75 9.5H4.5v5h3.25L12 18.75z"/></svg>
+        </button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // --- Sub-tab 3: Grammar & Gap-fill Roadmap Trainer ---
+  renderGrammarRoadmap() {
+    const container = document.getElementById("grammar-roadmap-container");
+    if (!container) return;
+
+    const data = ieltsData.grammarRoadmapData;
+    let html = `
+      <div class="glass-panel" style="margin-bottom:1.5rem;">
+        <h3 class="section-title" style="font-size:1.35rem; margin-bottom:0.5rem;">${data.title}</h3>
+        <p style="color:var(--text-muted); font-size:0.95rem;">${data.vietnameseTitle}</p>
+      </div>
+    `;
+
+    data.modules.forEach((mod, mIdx) => {
+      html += `
+        <div class="glass-panel" style="margin-bottom:1.5rem;">
+          <h4 style="font-family:var(--font-heading); color:var(--color-primary); font-size:1.2rem; margin-bottom:0.4rem;">
+            📌 Phần ${mIdx + 1}: ${mod.title}
+          </h4>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.25rem;">${mod.description}</p>
+
+          <div class="grammar-questions-group">
+            ${mod.questions.map((q, qIdx) => `
+              <div class="exercise-group" id="groadmap-q-${q.id}">
+                <div class="question-text"><strong>Câu ${qIdx + 1}:</strong> ${q.question}</div>
+                <div class="options-list">
+                  ${q.options.map(opt => `
+                    <button type="button" class="option-item" onclick="app.answerGrammarRoadmap(${q.id}, '${opt}', this)">
+                      ${opt}
+                    </button>
+                  `).join('')}
+                </div>
+                
+                <!-- Explanation and Sentence Vocab Breakdown Box -->
+                <div class="explanation-box" id="groadmap-exp-${q.id}" style="margin-top:1rem; display:none;">
+                  <div style="color:var(--color-primary); margin-bottom:0.75rem; font-size:0.9rem;">
+                    <strong>💡 Giải thích ngữ pháp:</strong> ${q.explanation}
+                  </div>
+                  
+                  <div style="background:rgba(0,0,0,0.2); padding:0.85rem; border-radius:10px; border:1px solid var(--border-glass);">
+                    <strong style="font-size:0.85rem; color:var(--text-bright); display:block; margin-bottom:0.35rem;">📚 Từ vựng & Cấu trúc trong câu:</strong>
+                    <div>
+                      ${q.vocabInSentence.map(v => `
+                        <span class="sentence-vocab-badge">
+                          <strong>${v.word}</strong> (${v.pos}): ${v.meaning}
+                        </span>
+                      `).join('')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  }
+
+  answerGrammarRoadmap(qId, selectedOpt, btn) {
+    const parentGroup = document.getElementById(`groadmap-q-${qId}`);
+    if (!parentGroup) return;
+
+    // Find question object
+    let matchedQ = null;
+    ieltsData.grammarRoadmapData.modules.forEach(m => {
+      m.questions.forEach(q => {
+        if (q.id === qId) matchedQ = q;
+      });
+    });
+
+    if (!matchedQ) return;
+
+    const options = parentGroup.querySelectorAll(".option-item");
+    options.forEach(b => {
+      const val = b.innerText.trim();
+      if (val === matchedQ.answer) {
+        b.classList.add("correct");
+      } else if (val === selectedOpt) {
+        b.classList.add("wrong");
+      }
+      b.disabled = true;
+    });
+
+    // Reveal explanation & sentence vocabulary
+    const expBox = document.getElementById(`groadmap-exp-${qId}`);
+    if (expBox) expBox.style.display = "block";
+
+    // Auto add sentence vocabulary to user's learned vocabulary bank
+    if (!this.user.learnedSentenceVocab) this.user.learnedSentenceVocab = [];
+    matchedQ.vocabInSentence.forEach(v => {
+      const exists = this.user.learnedSentenceVocab.some(item => item.word.toLowerCase() === v.word.toLowerCase());
+      if (!exists) {
+        this.user.learnedSentenceVocab.push(v);
+      }
+    });
+
+    this.save();
+  }
+
 
   showSingleFlashcard(wordText) {
     const vocabObj = this.user.vocabulary.find(v => v.word === wordText);
