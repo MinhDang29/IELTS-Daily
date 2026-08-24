@@ -632,22 +632,61 @@ class IELTSappState {
     }, { once: true });
   }
 
-  // --- Sub-tab 5: Pronunciation Drill ---
+  // --- Sub-tab 5: Pronunciation Drill (KippyAI-style AI Tutor) ---
   renderPronunciationDrill() {
     const container = document.getElementById("pronunciation-container");
-    if (!container || !ieltsData.pronunciationDrills) return;
+    if (!container) return;
     container.innerHTML = "";
 
+    // Initialize pronunciation state if not exists
+    if (!this.pronState) {
+      this.pronState = { mode: "repeat", currentIdx: 0, level: 0 };
+    }
+
+    // Tutor header with avatar
     const headerPanel = document.createElement("div");
     headerPanel.className = "glass-panel";
     headerPanel.style.marginBottom = "1.5rem";
     headerPanel.innerHTML = `
-      <h3 class="section-title" style="font-size:1.35rem; margin-bottom:0.5rem;">🎤 Luyện Phát Âm Từ Vựng IELTS</h3>
-      <p style="color:var(--text-muted); font-size:0.9rem;">Bấm <strong>🔊</strong> để nghe mẫu phát âm chuẩn. Sau đó bấm <strong>🎙</strong> để ghi âm giọng của bạn. Hệ thống sẽ so sánh và chấm điểm ngay lập tức.</p>
+      <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.75rem;">
+        <div class="tutor-avatar">
+          <div style="width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg, var(--color-primary), var(--color-secondary)); display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:white; font-weight:700; box-shadow:0 4px 15px rgba(99,102,241,0.4);">AI</div>
+        </div>
+        <div>
+          <h3 class="section-title" style="font-size:1.3rem; margin-bottom:0.15rem;">🎤 Trợ Lý Phát Âm AI</h3>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin:0;">Mình sẽ giúp bạn sửa phát âm như 1 người bạn thật! Đọc sai từ nào mình nói cho biết liền.</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <button class="tab-btn ${this.pronState.mode === 'repeat' ? 'active' : ''}" id="pron-mode-repeat" onclick="app.switchPronMode('repeat')">🔁 Đọc Lại Câu</button>
+        <button class="tab-btn ${this.pronState.mode === 'translate' ? 'active' : ''}" id="pron-mode-translate" onclick="app.switchPronMode('translate')">🇻🇳→🇬🇧 Dịch Sang Anh</button>
+        <button class="tab-btn ${this.pronState.mode === 'words' ? 'active' : ''}" id="pron-mode-words" onclick="app.switchPronMode('words')">📝 Từ Đơn</button>
+      </div>
     `;
     container.appendChild(headerPanel);
 
-    // Group by level
+    // Content area depends on mode
+    const contentDiv = document.createElement("div");
+    contentDiv.id = "pron-content-area";
+    container.appendChild(contentDiv);
+
+    if (this.pronState.mode === "words") {
+      this.renderPronWordsDrill(contentDiv);
+    } else {
+      this.renderPronSentenceDrill(contentDiv);
+    }
+  }
+
+  switchPronMode(mode) {
+    this.pronState.mode = mode;
+    this.pronState.currentIdx = 0;
+    this.renderPronunciationDrill();
+  }
+
+  // --- Word-level drill (original functionality, kept) ---
+  renderPronWordsDrill(contentDiv) {
+    if (!ieltsData.pronunciationDrills) return;
+    
     const levels = [
       { num: 1, label: "Cơ bản (Easy)", color: "var(--color-success)" },
       { num: 2, label: "Trung bình (Medium)", color: "var(--color-warning)" },
@@ -692,8 +731,283 @@ class IELTSappState {
         sectionDiv.appendChild(card);
       });
 
-      container.appendChild(sectionDiv);
+      contentDiv.appendChild(sectionDiv);
     });
+  }
+
+  // --- Sentence-level drill (KippyAI-style) ---
+  renderPronSentenceDrill(contentDiv) {
+    const sentences = ieltsData.pronunciationSentences;
+    if (!sentences || sentences.length === 0) {
+      contentDiv.innerHTML = `<div class="glass-panel"><p style="color:var(--text-muted);">Chưa có dữ liệu câu luyện phát âm.</p></div>`;
+      return;
+    }
+
+    const isTranslateMode = this.pronState.mode === "translate";
+    const idx = this.pronState.currentIdx;
+    const sentence = sentences[idx];
+
+    // Level selector
+    const levelBar = document.createElement("div");
+    levelBar.style.cssText = "display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap;";
+    const levelLabels = ["Tất cả", "🟢 Dễ", "🟡 Trung bình", "🔴 Khó"];
+    levelLabels.forEach((label, lvIdx) => {
+      const btn = document.createElement("button");
+      btn.className = `pron-level-btn ${this.pronState.level === lvIdx ? 'active' : ''}`;
+      btn.style.cssText = `padding:0.4rem 0.8rem; border-radius:10px; border:1px solid var(--border-glass); background:${this.pronState.level === lvIdx ? 'rgba(99,102,241,0.2)' : 'transparent'}; color:var(--text-bright); cursor:pointer; font-size:0.85rem; transition:all 0.2s;`;
+      btn.textContent = label;
+      btn.onclick = () => {
+        this.pronState.level = lvIdx;
+        this.pronState.currentIdx = 0;
+        this.renderPronunciationDrill();
+      };
+      levelBar.appendChild(btn);
+    });
+    contentDiv.appendChild(levelBar);
+
+    // Filter by level
+    const filtered = this.pronState.level === 0 ? sentences : sentences.filter(s => s.level === this.pronState.level);
+    if (filtered.length === 0) {
+      contentDiv.innerHTML += `<div class="glass-panel"><p style="color:var(--text-muted);">Không có câu ở mức độ này.</p></div>`;
+      return;
+    }
+    const safeIdx = this.pronState.currentIdx % filtered.length;
+    const currentSentence = filtered[safeIdx];
+
+    // Sentence Card
+    const card = document.createElement("div");
+    card.className = "glass-panel";
+    card.style.cssText = "margin-bottom:1.5rem; border:1px solid var(--border-glass); border-radius:20px;";
+
+    const levelColors = { 1: "var(--color-success)", 2: "var(--color-warning)", 3: "var(--color-danger)" };
+    const levelNames = { 1: "Dễ", 2: "Trung bình", 3: "Khó" };
+
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <span style="font-size:0.8rem; color:var(--text-muted);">Câu ${safeIdx + 1}/${filtered.length}</span>
+        <span style="background:rgba(99,102,241,0.1); color:${levelColors[currentSentence.level]}; padding:0.2rem 0.6rem; border-radius:8px; font-size:0.75rem; font-weight:600; border:1px solid rgba(99,102,241,0.15);">${levelNames[currentSentence.level]}</span>
+      </div>
+
+      ${isTranslateMode ? `
+        <div style="margin-bottom:1rem;">
+          <p style="font-size:0.85rem; color:var(--color-secondary); margin-bottom:0.3rem;">📋 Dịch câu này sang tiếng Anh:</p>
+          <p style="font-size:1.15rem; color:var(--text-bright); font-weight:600; line-height:1.6;">${currentSentence.vi}</p>
+        </div>
+      ` : `
+        <div style="margin-bottom:1rem;">
+          <p style="font-size:0.85rem; color:var(--color-secondary); margin-bottom:0.3rem;">🔊 Nghe và đọc lại câu này:</p>
+          <p style="font-size:1.15rem; color:var(--text-bright); font-weight:600; line-height:1.6;" id="pron-sentence-display">${currentSentence.en}</p>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.3rem;">${currentSentence.vi}</p>
+        </div>
+      `}
+
+      <div style="display:flex; gap:0.75rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap;">
+        <button class="pron-listen-btn" style="width:auto; border-radius:12px; padding:0.5rem 1rem; display:flex; align-items:center; gap:0.4rem;" onclick="speechEngine.speak('${currentSentence.en.replace(/'/g, "\\'")}', 'US')">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75V5.25L7.75 9.5H4.5v5h3.25L12 18.75z"/></svg>
+          Nghe mẫu
+        </button>
+        <button class="pron-record-btn" id="pron-sentence-rec-btn" style="width:auto; border-radius:12px; padding:0.5rem 1rem; display:flex; align-items:center; gap:0.4rem;" onclick="app.startSentencePronRecord()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+          Ghi âm
+        </button>
+      </div>
+
+      <div id="pron-sentence-result-area" style="margin-bottom:0.5rem;"></div>
+      <div id="pron-tutor-feedback" style="margin-top:0.5rem;"></div>
+
+      <div style="display:flex; justify-content:space-between; margin-top:1.25rem;">
+        <button style="padding:0.5rem 1rem; border-radius:12px; border:1px solid var(--border-glass); background:transparent; color:var(--text-bright); cursor:pointer; transition:all 0.2s;" onclick="app.pronNavigate(-1)">← Câu trước</button>
+        <button style="padding:0.5rem 1rem; border-radius:12px; border:1px solid rgba(99,102,241,0.3); background:rgba(99,102,241,0.1); color:var(--color-primary); cursor:pointer; font-weight:600; transition:all 0.2s;" onclick="app.pronNavigate(1)">Câu tiếp →</button>
+      </div>
+    `;
+    contentDiv.appendChild(card);
+
+    // Vocabulary in this sentence
+    if (currentSentence.words && currentSentence.words.length > 0) {
+      const vocabCard = document.createElement("div");
+      vocabCard.className = "glass-panel";
+      vocabCard.style.cssText = "border-radius:20px;";
+      vocabCard.innerHTML = `
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.75rem;">📚 Từ vựng trong câu (bấm để nghe phát âm):</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+          ${currentSentence.words.map(w => `
+            <span class="pron-vocab-chip" onclick="speechEngine.speak('${w.en}', 'US')" style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.15); padding:0.35rem 0.7rem; border-radius:10px; cursor:pointer; transition:all 0.2s; font-size:0.85rem;">
+              <strong style="color:var(--text-bright);">${w.en}</strong>
+              <span style="color:var(--color-primary); font-size:0.75rem; margin-left:0.2rem;">${w.ipa}</span>
+              <span style="color:var(--text-muted); font-size:0.78rem; display:block;">${w.vi}</span>
+            </span>
+          `).join("")}
+        </div>
+      `;
+      contentDiv.appendChild(vocabCard);
+    }
+  }
+
+  pronNavigate(direction) {
+    const sentences = ieltsData.pronunciationSentences;
+    if (!sentences) return;
+    const filtered = this.pronState.level === 0 ? sentences : sentences.filter(s => s.level === this.pronState.level);
+    this.pronState.currentIdx = (this.pronState.currentIdx + direction + filtered.length) % filtered.length;
+    this.renderPronunciationDrill();
+  }
+
+  startSentencePronRecord() {
+    const recBtn = document.getElementById("pron-sentence-rec-btn");
+    const resultArea = document.getElementById("pron-sentence-result-area");
+    const feedbackArea = document.getElementById("pron-tutor-feedback");
+
+    if (speechEngine.isRecording) {
+      speechEngine.stopListening();
+      if (recBtn) recBtn.classList.remove("recording");
+      return;
+    }
+
+    // Get current sentence
+    const sentences = ieltsData.pronunciationSentences;
+    if (!sentences) return;
+    const filtered = this.pronState.level === 0 ? sentences : sentences.filter(s => s.level === this.pronState.level);
+    const currentSentence = filtered[this.pronState.currentIdx % filtered.length];
+
+    if (recBtn) recBtn.classList.add("recording");
+    if (resultArea) resultArea.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem; animation:pulse 1s infinite;">🎙 Đang nghe bạn đọc...</p>`;
+    if (feedbackArea) feedbackArea.innerHTML = "";
+
+    speechEngine.startListening(
+      (transcript) => {
+        if (recBtn) recBtn.classList.remove("recording");
+        this.evaluateSentencePronunciation(currentSentence, transcript, resultArea, feedbackArea);
+      },
+      (error) => {
+        if (recBtn) recBtn.classList.remove("recording");
+        if (resultArea) resultArea.innerHTML = `<p style="color:var(--color-danger); font-size:0.85rem;">❌ Lỗi: ${error}. Vui lòng dùng Chrome hoặc Edge.</p>`;
+      },
+      () => {
+        if (recBtn) recBtn.classList.remove("recording");
+      }
+    );
+  }
+
+  evaluateSentencePronunciation(sentence, transcript, resultArea, feedbackArea) {
+    // Word-by-word comparison
+    const targetWords = sentence.en.toLowerCase().replace(/[.,!?;:'"()]/g, "").split(/\s+/).filter(Boolean);
+    const spokenWords = transcript.toLowerCase().replace(/[.,!?;:'"()]/g, "").split(/\s+/).filter(Boolean);
+
+    let correctCount = 0;
+    let wrongWords = [];
+    
+    // Build highlighted display
+    let highlightedHTML = "";
+    targetWords.forEach((tw, i) => {
+      const spoken = spokenWords[i] || "";
+      const isCorrect = spoken === tw || tw.includes(spoken) || spoken.includes(tw);
+      if (isCorrect) {
+        correctCount++;
+        highlightedHTML += `<span style="color:var(--color-success); font-weight:600; padding:0.1rem 0.2rem;">${sentence.en.split(/\s+/)[i] || tw}</span> `;
+      } else {
+        wrongWords.push({ target: tw, spoken: spoken });
+        highlightedHTML += `<span style="color:var(--color-danger); font-weight:600; text-decoration:underline wavy var(--color-danger); padding:0.1rem 0.2rem;">${sentence.en.split(/\s+/)[i] || tw}</span> `;
+      }
+    });
+
+    const scorePercent = Math.round((correctCount / targetWords.length) * 100);
+    const scoreColor = scorePercent >= 80 ? "var(--color-success)" : scorePercent >= 50 ? "var(--color-warning)" : "var(--color-danger)";
+
+    // Show results with word-by-word comparison
+    resultArea.innerHTML = `
+      <div style="margin-bottom:0.75rem;">
+        <span style="font-size:0.85rem; color:var(--text-muted);">Bạn nói:</span>
+        <p style="font-size:1rem; color:var(--text-bright); font-style:italic; margin:0.25rem 0;">"${transcript}"</p>
+      </div>
+      <div style="margin-bottom:0.75rem;">
+        <span style="font-size:0.85rem; color:var(--text-muted);">So sánh từng từ:</span>
+        <p style="font-size:1.05rem; margin:0.25rem 0; line-height:1.8;">${highlightedHTML}</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <div style="width:60px; height:60px; border-radius:50%; border:3px solid ${scoreColor}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <span style="font-size:1.1rem; font-weight:700; color:${scoreColor};">${scorePercent}%</span>
+        </div>
+        <div>
+          <strong style="color:var(--text-bright);">${scorePercent >= 80 ? 'Xuất sắc! 🎉' : scorePercent >= 50 ? 'Khá tốt! 💪' : 'Cần luyện thêm 📖'}</strong>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin:0;">${correctCount}/${targetWords.length} từ đúng</p>
+        </div>
+      </div>
+    `;
+
+    // AI Tutor Vietnamese feedback (spoken aloud like a real tutor!)
+    let tutorText = "";
+    if (scorePercent >= 90) {
+      tutorText = "Tuyệt vời! Bạn phát âm rất chuẩn rồi đó! Sang câu tiếp nhé!";
+    } else if (scorePercent >= 70) {
+      tutorText = `Khá tốt rồi! Nhưng bạn đọc sai ${wrongWords.length} từ. `;
+      wrongWords.slice(0, 3).forEach(w => {
+        const wordInfo = sentence.words ? sentence.words.find(wd => wd.en.toLowerCase() === w.target) : null;
+        if (wordInfo) {
+          tutorText += `Từ "${wordInfo.en}" nghĩa là "${wordInfo.vi}", phiên âm là ${wordInfo.ipa}. `;
+        } else {
+          tutorText += `Từ "${w.target}" bạn đọc thành "${w.spoken || 'bỏ sót'}". `;
+        }
+      });
+      tutorText += "Hãy thử lại nhé!";
+    } else {
+      tutorText = `Bạn đọc sai khá nhiều, đừng lo! Mình sửa cho bạn nhé. `;
+      wrongWords.slice(0, 4).forEach(w => {
+        const wordInfo = sentence.words ? sentence.words.find(wd => wd.en.toLowerCase() === w.target) : null;
+        if (wordInfo) {
+          tutorText += `Từ "${wordInfo.en}" nghĩa là "${wordInfo.vi}", đọc là ${wordInfo.ipa}. `;
+        } else {
+          tutorText += `Từ "${w.target}" bạn đọc thành "${w.spoken || 'bỏ sót'}". `;
+        }
+      });
+      tutorText += "Bấm nghe mẫu rồi đọc lại thử nha!";
+    }
+
+    // Display tutor feedback with avatar
+    feedbackArea.innerHTML = `
+      <div style="display:flex; gap:0.75rem; align-items:flex-start; background:rgba(99,102,241,0.06); border:1px solid rgba(99,102,241,0.15); border-radius:16px; padding:1rem; margin-top:0.5rem; animation:fadeIn 0.4s ease;">
+        <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, var(--color-primary), var(--color-secondary)); display:flex; align-items:center; justify-content:center; font-size:1rem; color:white; font-weight:700; flex-shrink:0;">AI</div>
+        <div style="flex:1;">
+          <strong style="color:var(--color-primary); font-size:0.85rem;">Trợ Lý AI nói:</strong>
+          <p style="color:var(--text-bright); font-size:0.9rem; margin:0.25rem 0; line-height:1.6;">${tutorText}</p>
+          <button onclick="speechEngine.speak(\`${tutorText.replace(/`/g, "'")}\`, 'VI')" style="margin-top:0.5rem; padding:0.35rem 0.75rem; border-radius:10px; border:1px solid rgba(99,102,241,0.3); background:rgba(99,102,241,0.1); color:var(--color-primary); cursor:pointer; font-size:0.8rem; transition:all 0.2s;">
+            🔊 Nghe AI nói tiếng Việt
+          </button>
+          ${wrongWords.length > 0 ? `
+            <button onclick="app.speakWrongWordsSlowly()" style="margin-top:0.5rem; margin-left:0.5rem; padding:0.35rem 0.75rem; border-radius:10px; border:1px solid rgba(245,158,11,0.3); background:rgba(245,158,11,0.1); color:var(--color-warning); cursor:pointer; font-size:0.8rem; transition:all 0.2s;">
+              🐢 Nghe từ sai đọc chậm
+            </button>
+          ` : ""}
+        </div>
+      </div>
+    `;
+
+    // Store wrong words for slow replay
+    this._lastWrongWords = wrongWords.map(w => w.target);
+
+    // Auto-speak tutor feedback in Vietnamese
+    setTimeout(() => {
+      speechEngine.speak(tutorText, "VI");
+    }, 500);
+
+    // Log to history
+    this.user.history.push({
+      date: new Date().toLocaleDateString('vi-VN'),
+      activity: `Luyện phát âm câu: "${sentence.en.substring(0, 40)}..."`,
+      details: `Điểm: ${scorePercent}% (${correctCount}/${targetWords.length} từ đúng)`
+    });
+    this.save();
+  }
+
+  speakWrongWordsSlowly() {
+    if (!this._lastWrongWords || this._lastWrongWords.length === 0) return;
+    let idx = 0;
+    const speakNext = () => {
+      if (idx >= this._lastWrongWords.length) return;
+      speechEngine.speak(this._lastWrongWords[idx], "US", null, () => {
+        idx++;
+        setTimeout(speakNext, 800);
+      });
+    };
+    speakNext();
   }
 
   startPronunciationRecord(drillId, targetWord) {
@@ -716,7 +1030,6 @@ class IELTSappState {
         if (recBtn) recBtn.classList.remove("recording");
         if (transcriptDiv) transcriptDiv.innerText = `Bạn nói: "${transcript}"`;
 
-        // Compare pronunciation
         const target = targetWord.toLowerCase().trim();
         const spoken = transcript.toLowerCase().trim();
         
@@ -727,7 +1040,6 @@ class IELTSappState {
           resultClass = "correct";
           resultText = "✓ Đúng!";
         } else {
-          // Check partial match (at least 60% of characters match)
           let matchChars = 0;
           const shorter = Math.min(target.length, spoken.length);
           for (let i = 0; i < shorter; i++) {
@@ -748,7 +1060,19 @@ class IELTSappState {
           resultDiv.innerHTML = `<span class="pron-result-badge ${resultClass}">${resultText}</span>`;
         }
 
-        // Log to history
+        // AI Tutor word feedback
+        if (resultClass !== "correct") {
+          const drill = ieltsData.pronunciationDrills.find(d => d.id === drillId);
+          if (drill) {
+            const feedback = resultClass === "partial" 
+              ? `Gần đúng rồi! Từ "${drill.word}" đọc là ${drill.ipa}. Thử lại nhé!`
+              : `Bạn đọc sai rồi! Từ "${drill.word}" nghĩa là "${drill.vi}", đọc là ${drill.ipa}. Nghe mẫu rồi thử lại nha!`;
+            setTimeout(() => speechEngine.speak(feedback, "VI"), 300);
+          }
+        } else {
+          setTimeout(() => speechEngine.speak("Đúng rồi! Giỏi lắm!", "VI"), 300);
+        }
+
         this.user.history.push({
           date: new Date().toLocaleDateString('vi-VN'),
           activity: `Luyện phát âm: "${targetWord}"`,

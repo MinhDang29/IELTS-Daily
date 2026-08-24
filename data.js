@@ -2485,6 +2485,104 @@ const ieltsData = {
     { id: 13, word: "Preservation", ipa: "/ˌprezərˈveɪʃən/", vi: "Sự bảo tồn", level: 2 },
     { id: 14, word: "Approximately", ipa: "/əˈprɒksɪmətli/", vi: "Xấp xỉ, khoảng", level: 3 },
     { id: 15, word: "Deteriorate", ipa: "/dɪˈtɪəriəreɪt/", vi: "Xấu đi, xuống cấp", level: 3 }
+  ],
+  pronunciationSentences: [
+    {
+      id: 1,
+      en: "The weather is very nice today.",
+      vi: "Thời tiết hôm nay rất đẹp.",
+      level: 1,
+      words: [
+        { en: "weather", vi: "thời tiết", ipa: "/ˈweðər/" },
+        { en: "very", vi: "rất", ipa: "/ˈveri/" },
+        { en: "nice", vi: "đẹp, dễ chịu", ipa: "/naɪs/" },
+        { en: "today", vi: "hôm nay", ipa: "/təˈdeɪ/" }
+      ]
+    },
+    {
+      id: 2,
+      en: "I go to school every morning.",
+      vi: "Tôi đi học mỗi sáng.",
+      level: 1,
+      words: [
+        { en: "school", vi: "trường học", ipa: "/skuːl/" },
+        { en: "every", vi: "mỗi", ipa: "/ˈevri/" },
+        { en: "morning", vi: "buổi sáng", ipa: "/ˈmɔːrnɪŋ/" }
+      ]
+    },
+    {
+      id: 3,
+      en: "She likes reading books at home.",
+      vi: "Cô ấy thích đọc sách ở nhà.",
+      level: 1,
+      words: [
+        { en: "likes", vi: "thích", ipa: "/laɪks/" },
+        { en: "reading", vi: "đọc", ipa: "/ˈriːdɪŋ/" },
+        { en: "books", vi: "sách", ipa: "/bʊks/" }
+      ]
+    },
+    {
+      id: 4,
+      en: "Technology has transformed the way people communicate globally.",
+      vi: "Công nghệ đã thay đổi cách con người giao tiếp toàn cầu.",
+      level: 2,
+      words: [
+        { en: "technology", vi: "công nghệ", ipa: "/tekˈnɒlədʒi/" },
+        { en: "transformed", vi: "biến đổi", ipa: "/trænsˈfɔːrmd/" },
+        { en: "communicate", vi: "giao tiếp", ipa: "/kəˈmjuːnɪkeɪt/" },
+        { en: "globally", vi: "toàn cầu", ipa: "/ˈɡloʊbəli/" }
+      ]
+    },
+    {
+      id: 5,
+      en: "Environmental pollution is a serious problem affecting public health.",
+      vi: "Ô nhiễm môi trường là vấn đề nghiêm trọng ảnh hưởng sức khỏe cộng đồng.",
+      level: 2,
+      words: [
+        { en: "environmental", vi: "môi trường", ipa: "/ɪnˌvaɪrənˈmentl/" },
+        { en: "pollution", vi: "ô nhiễm", ipa: "/pəˈluːʃən/" },
+        { en: "serious", vi: "nghiêm trọng", ipa: "/ˈsɪəriəs/" },
+        { en: "affecting", vi: "ảnh hưởng", ipa: "/əˈfektɪŋ/" }
+      ]
+    },
+    {
+      id: 6,
+      en: "Students should develop critical thinking skills for academic success.",
+      vi: "Sinh viên nên phát triển kỹ năng tư duy phản biện để thành công trong học tập.",
+      level: 2,
+      words: [
+        { en: "develop", vi: "phát triển", ipa: "/dɪˈveləp/" },
+        { en: "critical", vi: "phản biện", ipa: "/ˈkrɪtɪkəl/" },
+        { en: "thinking", vi: "tư duy", ipa: "/ˈθɪŋkɪŋ/" },
+        { en: "academic", vi: "học thuật", ipa: "/ˌækəˈdemɪk/" }
+      ]
+    },
+    {
+      id: 7,
+      en: "The government should implement sustainable development policies to preserve natural resources for future generations.",
+      vi: "Chính phủ nên thực thi các chính sách phát triển bền vững để bảo tồn tài nguyên thiên nhiên cho các thế hệ tương lai.",
+      level: 3,
+      words: [
+        { en: "government", vi: "chính phủ", ipa: "/ˈɡʌvərnmənt/" },
+        { en: "implement", vi: "thực thi", ipa: "/ˈɪmplɪment/" },
+        { en: "sustainable", vi: "bền vững", ipa: "/səˈsteɪnəbəl/" },
+        { en: "preserve", vi: "bảo tồn", ipa: "/prɪˈzɜːrv/" },
+        { en: "generations", vi: "thế hệ", ipa: "/ˌdʒenəˈreɪʃənz/" }
+      ]
+    },
+    {
+      id: 8,
+      en: "Urbanization has led to significant infrastructure challenges in developing countries throughout the world.",
+      vi: "Đô thị hóa đã dẫn đến những thách thức cơ sở hạ tầng đáng kể ở các nước đang phát triển trên toàn thế giới.",
+      level: 3,
+      words: [
+        { en: "urbanization", vi: "đô thị hóa", ipa: "/ˌɜːrbənaɪˈzeɪʃən/" },
+        { en: "significant", vi: "đáng kể", ipa: "/sɪɡˈnɪfɪkənt/" },
+        { en: "infrastructure", vi: "cơ sở hạ tầng", ipa: "/ˈɪnfrəstrʌktʃər/" },
+        { en: "challenges", vi: "thách thức", ipa: "/ˈtʃælɪndʒɪz/" },
+        { en: "developing", vi: "đang phát triển", ipa: "/dɪˈveləpɪŋ/" }
+      ]
+    }
   ]
 };
 
