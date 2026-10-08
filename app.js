@@ -363,7 +363,9 @@ class IELTSappState {
       navBtn.parentElement.classList.add("active");
     }
 
-    if (pageId === "dashboard") {
+    if (pageId === "conversations") {
+      this.renderConversations();
+    } else if (pageId === "dashboard") {
       this.renderDashboard();
     } else if (pageId === "roadmap") {
       this.renderRoadmap();
@@ -380,7 +382,7 @@ class IELTSappState {
     document.getElementById("profile-widget-name").innerText = this.user.name;
     document.getElementById("profile-widget-streak").innerText = `${this.user.streak} ngày học`;
     document.getElementById("avatar-letter").innerText = this.user.name.charAt(0).toUpperCase();
-    this.switchPage("dashboard");
+    this.switchPage("conversations");
   }
 
   renderDashboard() {
@@ -452,6 +454,149 @@ class IELTSappState {
         historyList.appendChild(li);
       });
     }
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // CONVERSATIONS PAGE - 20 bài hội thoại A & B
+  // ════════════════════════════════════════════════════════════════
+  renderConversations() {
+    if (typeof conversationData === 'undefined') return;
+
+    // Initialize state
+    if (!this.convState) {
+      this.convState = { filter: 'all', expandedId: null, showViMap: {} };
+    }
+
+    // Render filter bar
+    const filterBar = document.getElementById('conv-filter-bar');
+    if (filterBar) {
+      const levels = ['all', 'Easy', 'Medium', 'Hard'];
+      const levelLabels = { all: '🌐 Tất cả', Easy: '🟢 Dễ', Medium: '🟡 Trung bình', Hard: '🔴 Khó' };
+      filterBar.innerHTML = levels.map(lv => `
+        <button class="conv-filter-btn ${this.convState.filter === lv ? 'active' : ''}" onclick="app.filterConversations('${lv}')">
+          ${levelLabels[lv]}
+        </button>
+      `).join('');
+    }
+
+    // Render conversation cards
+    const container = document.getElementById('conversations-list');
+    if (!container) return;
+
+    const filtered = this.convState.filter === 'all'
+      ? conversationData
+      : conversationData.filter(c => c.level === this.convState.filter);
+
+    if (filtered.length === 0) {
+      container.innerHTML = `<div class="glass-panel" style="text-align:center;padding:3rem;"><p style="color:var(--text-muted)">Không có bài hội thoại ở mức này.</p></div>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(conv => {
+      const isExpanded = this.convState.expandedId === conv.id;
+      const showVi = this.convState.showViMap[conv.id] !== false; // default: show
+
+      const levelColors = { Easy: 'var(--color-success)', Medium: 'var(--color-warning)', Hard: 'var(--color-danger)' };
+      const levelBg = { Easy: 'rgba(16,185,129,0.1)', Medium: 'rgba(245,158,11,0.1)', Hard: 'rgba(239,68,68,0.1)' };
+
+      return `
+        <div class="conv-card ${isExpanded ? 'conv-card-expanded' : ''}" id="conv-card-${conv.id}">
+          <div class="conv-card-header" onclick="app.toggleConversation(${conv.id})">
+            <div class="conv-card-left">
+              <span class="conv-icon">${conv.icon}</span>
+              <div>
+                <h4 class="conv-title">${conv.title}</h4>
+                <span class="conv-title-vi">${conv.titleVi}</span>
+              </div>
+            </div>
+            <div class="conv-card-right">
+              <span class="conv-roles-badge">${conv.roleA} ↔ ${conv.roleB}</span>
+              <span class="conv-level-badge" style="color:${levelColors[conv.level]};background:${levelBg[conv.level]};border:1px solid ${levelColors[conv.level]}22;">${conv.level}</span>
+              <span class="conv-expand-arrow">${isExpanded ? '▲' : '▼'}</span>
+            </div>
+          </div>
+
+          ${isExpanded ? `
+            <div class="conv-card-body">
+              <div class="conv-controls-bar">
+                <button class="conv-ctrl-btn" onclick="app.playFullConversation(${conv.id})" title="Nghe toàn bộ hội thoại">
+                  🔊 Nghe toàn bộ
+                </button>
+                <button class="conv-ctrl-btn" onclick="app.toggleConvVietnamese(${conv.id})">
+                  ${showVi ? '🇻🇳 Ẩn tiếng Việt' : '🇻🇳 Hiện tiếng Việt'}
+                </button>
+                <span class="conv-line-count">${conv.lines.length} câu thoại</span>
+              </div>
+
+              <div class="conv-dialogue">
+                ${conv.lines.map((line, idx) => `
+                  <div class="conv-line conv-line-${line.role.toLowerCase()}">
+                    <div class="conv-line-role">${line.role === 'A' ? conv.roleA : conv.roleB}</div>
+                    <div class="conv-line-content">
+                      <div class="conv-line-en">
+                        <span>${line.en}</span>
+                        <button class="conv-line-speak" onclick="event.stopPropagation(); speechEngine.speak('${line.en.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 'US')" title="Nghe câu này">
+                          🔊
+                        </button>
+                      </div>
+                      ${showVi ? `<div class="conv-line-vi">${line.vi}</div>` : ''}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  filterConversations(level) {
+    if (!this.convState) this.convState = { filter: 'all', expandedId: null, showViMap: {} };
+    this.convState.filter = level;
+    this.convState.expandedId = null;
+    this.renderConversations();
+  }
+
+  toggleConversation(id) {
+    if (!this.convState) this.convState = { filter: 'all', expandedId: null, showViMap: {} };
+    this.convState.expandedId = this.convState.expandedId === id ? null : id;
+    this.renderConversations();
+
+    // Scroll into view
+    setTimeout(() => {
+      const el = document.getElementById(`conv-card-${id}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  toggleConvVietnamese(id) {
+    if (!this.convState) this.convState = { filter: 'all', expandedId: null, showViMap: {} };
+    const current = this.convState.showViMap[id] !== false;
+    this.convState.showViMap[id] = !current;
+    this.renderConversations();
+  }
+
+  playFullConversation(id) {
+    const conv = conversationData.find(c => c.id === id);
+    if (!conv) return;
+
+    let lineIdx = 0;
+    const speakNext = () => {
+      if (lineIdx >= conv.lines.length) return;
+
+      const line = conv.lines[lineIdx];
+      // Highlight current line
+      const allLineEls = document.querySelectorAll(`#conv-card-${id} .conv-line`);
+      allLineEls.forEach(el => el.classList.remove('conv-line-playing'));
+      if (allLineEls[lineIdx]) allLineEls[lineIdx].classList.add('conv-line-playing');
+
+      speechEngine.speak(line.en, 'US', null, () => {
+        lineIdx++;
+        setTimeout(speakNext, 500);
+      });
+    };
+    speakNext();
   }
 
   renderRoadmap() {
