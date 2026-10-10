@@ -375,6 +375,12 @@ class IELTSappState {
       this.renderAnalytics();
     } else if (pageId === "mock-test") {
       this.renderMockTest();
+    } else if (pageId === "vstep-hub") {
+      if (typeof ensureVSTEPInstance === "function") {
+        ensureVSTEPInstance().renderHub();
+      } else if (window.vstep) {
+        window.vstep.renderHub();
+      }
     }
   }
 
@@ -382,6 +388,11 @@ class IELTSappState {
     document.getElementById("profile-widget-name").innerText = this.user.name;
     document.getElementById("profile-widget-streak").innerText = `${this.user.streak} ngày học`;
     document.getElementById("avatar-letter").innerText = this.user.name.charAt(0).toUpperCase();
+    if (typeof ensureVSTEPInstance === "function") {
+      ensureVSTEPInstance();
+    } else if (window.vstep) {
+      window.vstep.loadProgress();
+    }
     this.switchPage("conversations");
   }
 

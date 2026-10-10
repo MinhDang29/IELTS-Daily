@@ -1,6 +1,6 @@
 // ============================================
 // CONVERSATION DIALOGUES DATA
-// 20 bài hội thoại A & B với dịch tiếng Việt
+// 23 bài hội thoại A & B với dịch tiếng Việt (bao gồm Casino)
 // ============================================
 
 const conversationData = [
@@ -501,6 +501,83 @@ const conversationData = [
       { role: "A", en: "To go, please. I'm heading to work.", vi: "Mang đi, cảm ơn. Tôi đang đi làm." },
       { role: "B", en: "That'll be $8.50 total. Would you like to pay by cash or card?", vi: "Tổng cộng $8.50. Bạn muốn trả tiền mặt hay thẻ?" },
       { role: "A", en: "Card, please. Thank you! Have a great day!", vi: "Thẻ nhé. Cảm ơn! Chúc bạn một ngày tốt đẹp!" }
+    ]
+  },
+
+  // ── 21. AT THE BLACKJACK TABLE ──
+  {
+    id: 21,
+    title: "At the Blackjack Table",
+    titleVi: "Tại Bàn Chơi Blackjack (Casino)",
+    icon: "🃏",
+    roleA: "Player (Khách chơi)",
+    roleB: "Dealer (Nhân viên chia bài)",
+    level: "Medium",
+    lines: [
+      { role: "A", en: "Good evening! Is this seat open?", vi: "Chào buổi tối! Ghế này còn trống không bạn?" },
+      { role: "B", en: "Yes, sir! Welcome to the table. The minimum bet here is $25, and the maximum is $1,000.", vi: "Dạ còn ạ, thưa ông! Chào mừng ông vào bàn. Mức cược tối thiểu ở đây là $25 và tối đa là $1,000." },
+      { role: "A", en: "Sounds good. Change one thousand dollars, please.", vi: "Tốt lắm. Đổi giúp tôi một nghìn đô tiền phíp nhé." },
+      { role: "B", en: "Money on the table, thank you! Changing one thousand. Here are your chips: eight $100 black chips and eight $25 green chips.", vi: "Tiền đặt trên bàn, cảm ơn ông! Đang đổi một nghìn. Đây là chip của ông: tám chip đen $100 và tám chip xanh lá $25." },
+      { role: "A", en: "Thank you. I'll put $50 on the main bet and $10 on the Perfect Pairs side bet.", vi: "Cảm ơn bạn. Tôi đặt $50 cược chính và $10 vào cược phụ Đôi Hoàn Hảo." },
+      { role: "B", en: "Bets are in. No more bets, please. Dealing the cards...", vi: "Đã nhận cược. Xin ngưng đặt cược. Bắt đầu chia bài..." },
+      { role: "B", en: "You have an Ace and a 6 — that's a soft 17. The dealer is showing an 8. Would you like to hit or stand?", vi: "Ông có một Át và một 6 — tức là 17 mềm. Lá mở của nhà cái là 8. Ông muốn rút thêm hay dừng lại?" },
+      { role: "A", en: "Hit me, please.", vi: "Cho tôi rút thêm một lá." },
+      { role: "B", en: "You got a 4. That brings your total to a hard 21! Outstanding!", vi: "Ông được lá 4. Tổng điểm lên tròn 21 cứng! Quá xuất sắc!" },
+      { role: "A", en: "Awesome! I'll stand on 21.", vi: "Tuyệt quá! Tôi dừng ở 21 nhé." },
+      { role: "B", en: "Dealer turns over an 8 with a King — 18. Dealer stands on 18. 21 beats 18, you win! Paying even money: $50.", vi: "Nhà cái lật thêm một 8 với một Già — 18 điểm. Nhà cái dừng ở 18. 21 thắng 18, ông thắng rồi! Trả thưởng 1 ăn 1: $50." },
+      { role: "A", en: "Great deal! Here is a $5 tip chip for you.", vi: "Chia bài rất mát tay! Gửi bạn $5 chip tiền tip nhé." },
+      { role: "B", en: "Thank you so much, sir! Much appreciated. Best of luck on the next hand!", vi: "Cảm ơn ông rất nhiều ạ! Chúc ông ván sau tiếp tục may mắn!" }
+    ]
+  },
+
+  // ── 22. AT THE CASINO CASHIER CAGE ──
+  {
+    id: 22,
+    title: "Casino Cashier Cage",
+    titleVi: "Đổi Thưởng Tại Quầy Thu Ngân (Casino)",
+    icon: "💵",
+    roleA: "Player (Khách chơi)",
+    roleB: "Cage Cashier (Thu ngân quầy Cage)",
+    level: "Easy",
+    lines: [
+      { role: "B", en: "Hello! Welcome to the Cashier Cage. How can I help you today?", vi: "Xin chào! Chào mừng quý khách đến quầy thu ngân. Tôi có thể hỗ trợ gì cho quý khách ạ?" },
+      { role: "A", en: "Hi! I just finished my table session and I'd like to cash out these chips, please.", vi: "Chào bạn! Tôi vừa chơi xong ở bàn và muốn đổi số chip này thành tiền mặt." },
+      { role: "B", en: "Certainly! Please place your chips on the counter so I can count them.", vi: "Dạ vâng! Xin vui lòng đặt các chip lên quầy để tôi kiểm đếm ạ." },
+      { role: "A", en: "Here they are. I think I have three $500 chips and some $100s.", vi: "Đây bạn. Tôi có 3 chip $500 và một vài chip $100." },
+      { role: "B", en: "Let's see: three purple $500 chips make $1,500, plus seven black $100 chips, and four $25 green chips. That totals $2,300.", vi: "Để tôi xem: ba chip tím $500 là $1,500, cộng thêm bảy chip đen $100, và bốn chip xanh lá $25. Tổng cộng là $2,300 ạ." },
+      { role: "A", en: "That matches my count exactly.", vi: "Khớp đúng với số tôi nhẩm tính rồi." },
+      { role: "B", en: "Do you have your Casino Player's Card with you so I can credit your reward points?", vi: "Quý khách có mang Thẻ hội viên Casino không để tôi cộng điểm thưởng cho quý khách ạ?" },
+      { role: "A", en: "Yes, here is my Gold Rewards card.", vi: "Có, đây là thẻ Gold Rewards của tôi." },
+      { role: "B", en: "Thank you, Mr. Lam. Would you prefer large hundred-dollar bills or some fifties?", vi: "Cảm ơn ông Lâm. Ông muốn nhận toàn bộ tờ 100 đô hay có cần tờ 50 đô không ạ?" },
+      { role: "A", en: "All hundreds would be great, please.", vi: "Cho tôi toàn bộ tờ $100 là tốt nhất." },
+      { role: "B", en: "Here is $2,300: twenty-three hundred-dollar bills. Let's count them out together.", vi: "Đây là $2,300 của ông: hai mươi ba tờ một trăm đô. Tôi xin đếm lại cùng ông nhé." },
+      { role: "A", en: "Looks perfect. Thanks for the quick service!", vi: "Đủ rồi. Cảm ơn bạn đã xử lý nhanh chóng nhé!" },
+      { role: "B", en: "You're very welcome! Congratulations on your win and have a wonderful evening!", vi: "Không có gì ạ! Chúc mừng chiến thắng của ông và chúc ông một buổi tối vui vẻ!" }
+    ]
+  },
+
+  // ── 23. CASINO VIP HOST & HIGH LIMIT LOUNGE ──
+  {
+    id: 23,
+    title: "Casino VIP Host & Rewards",
+    titleVi: "Dịch Vụ Khách VIP & Phòng Cược Lớn (Casino)",
+    icon: "💎",
+    roleA: "High Roller Guest (Khách cược VIP)",
+    roleB: "VIP Host (Quản lý khách VIP)",
+    level: "Hard",
+    lines: [
+      { role: "A", en: "Good evening. I'm a Platinum member staying this weekend. I was told to ask for the VIP Host.", vi: "Chào buổi tối. Tôi là hội viên Bạch kim ở lại dịp cuối tuần này. Tôi được hướng dẫn tìm gặp Quản lý VIP." },
+      { role: "B", en: "Good evening, Mr. Tran! My name is Marcus, and I'm your dedicated VIP Casino Host. Welcome back!", vi: "Chào buổi tối, ông Trần! Tôi là Marcus, chuyên viên chăm sóc VIP riêng của ông. Rất vui mừng chào đón ông quay lại!" },
+      { role: "A", en: "Thanks, Marcus. We are looking for a private Baccarat table in the High Limit Salon with higher limits.", vi: "Cảm ơn Marcus. Chúng tôi đang tìm một bàn Baccarat riêng trong phòng High Limit với mức cược cao hơn." },
+      { role: "B", en: "Right this way, sir. Our Orchid High Limit Salon offers private salons with limits up to $50,000 per hand.", vi: "Mời ông đi lối này ạ. Phòng Orchid High Limit có các phòng salon biệt lập với mức cược lên đến $50,000 mỗi ván." },
+      { role: "A", en: "Excellent. Can we establish a line of credit or do you prefer a front money wire transfer?", vi: "Tuyệt vời. Chúng tôi có thể mở hạn mức tín dụng cược (line of credit) hay khách sạn muốn nhận chuyển khoản tiền ký quỹ trước?" },
+      { role: "B", en: "Both options are available. Since you have an active Platinum tier, your $100,000 casino marker is already pre-approved.", vi: "Cả hai cách đều tiện lợi ạ. Vì ông đã có hạng Bạch kim nên hạn mức ký nợ marker $100,000 của ông đã được duyệt trước sẵn rồi." },
+      { role: "A", en: "That is very convenient. Also, could you help us arrange reservations at the rooftop steakhouse tonight?", vi: "Tiện quá. Ngoài ra, bạn giúp chúng tôi đặt bàn tại nhà hàng steak tầng thượng tối nay được không?" },
+      { role: "B", en: "Consider it done, Mr. Tran. I'll reserve the chef's private booth at 8:30 PM, and your dinner will be fully comped on your card.", vi: "Tôi đã lo xong rồi, thưa ông Trần. Tôi sẽ giữ bàn riêng của bếp trưởng lúc 8:30 tối, và bữa tối sẽ được đài thọ miễn phí 100% bằng điểm comp." },
+      { role: "A", en: "That's fantastic hospitality. We appreciate your attention to detail.", vi: "Dịch vụ tiếp đón chu đáo thật. Chúng tôi rất đánh giá cao sự tận tình của bạn." },
+      { role: "B", en: "It's my pleasure, sir. If you need anything during your gaming session — drinks, cigars, or car service — just text my direct line.", vi: "Đó là niềm vinh hạnh của tôi ạ. Bất cứ lúc nào ông cần đồ uống, xì gà, hay xe đưa đón, chỉ cần nhắn tin vào số cá nhân của tôi." },
+      { role: "A", en: "Understood. Let's head inside the salon.", vi: "Được rồi. Chúng ta vào phòng salon nhé." },
+      { role: "B", en: "Right after you, Mr. Tran. May Lady Luck be on your side tonight!", vi: "Mời ông đi trước ạ. Chúc nữ thần may mắn mỉm cười với ông tối nay!" }
     ]
   }
 ];
